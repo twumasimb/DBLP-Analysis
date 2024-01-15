@@ -1,0 +1,9 @@
+/.vscode
+/coauthorship_graph.gml
+/dataset.pkl
+/dblp_data.txt
+/filtered_dataset.pkl
+/weighted_network.pkl
+/largest_cc.pkl
+/author_data.pkl
+/one_venue_network.pkl
