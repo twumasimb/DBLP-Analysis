@@ -1,567 +1,466 @@
+import pickle
 import networkx as nx
 import random
-import pickle
-import plotly.graph_objects as go
+import chime
 
 
-list_1 = [('software', 'design'), ('software', 'cyber'),
-          ('software', 'sales'), ('software', 'advert')]  # Star
-list_2 = [('software', 'design'), ('software', 'cyber'), ('software', 'sales'), ('software',
-                                                                                 'advert'), ('sales', 'advert'), ('cyber', 'sales'), ('design', 'advert')]  # 3 triads
-list_3 = [('software', 'design'), ('software', 'cyber'),
-          ('cyber', 'sales'), ('advert', 'sales')]  # Chain
-list_4 = [('software', 'design'), ('software', 'cyber'), ('cyber',
-                                                          'sales'), ('design', 'sales'), ('design', 'cyber')]  # 1 triad
-list_5 = [('software', 'design'), ('software', 'cyber'), ('software', 'sales'), ('software', 'advert'), ('sales', 'advert'),
-          ('cyber', 'sales'), ('design', 'advert'), ('design', 'cyber'), ('advert', 'cyber'), ('design', 'sales')]  # Fully connected
-
-
-# Team_1 = utils.createRandomTeam(network, 'design', 10)
-# Team_2 = utils.createRandomTeam(network, 'cyber', 10)
-# Team_3 = utils.createRandomTeam(network, 'software', 10)
-# Team_4 = utils.createRandomTeam(network, 'advert', 10)
-# Team_5 = utils.createRandomTeam(network, 'sales', 10)
-
-
-def createNetwork(file):
-    return nx.read_edgelist(file, create_using=nx.Graph(), nodetype=int)
-
-
-def networkPreprocessing(G, labels):
+def randomAlgo(network):
     """
-        Define some labels and randomly assign them to the nodes in the network.
+    Randomly selects a node from each unique venue in the network.
+
+    Parameters:
+    - network: The network graph.
+
+    Returns:
+    - A list of selected nodes.
     """
-    # Assign labels to each node
-    for node in G.nodes():
-        label = random.choice(labels)
-        G.nodes[node]["label"] = label
+    # Get node venues
+    node_venues = nx.get_node_attributes(network, 'venues')
 
-    # Add random weights to the edges
-    for u, v in G.edges():
-        weight = random.randint(1, 100)
-        G[u][v]['weight'] = weight
+    selected_nodes = {}
+    for node, venues in node_venues.items():
+        for venue in venues:
+            # If the venue is not already in selected_nodes, add the node
+            if venue not in selected_nodes:
+                selected_nodes[venue] = node
 
-    # Add random weights to unconnected edges
-    for u in G.nodes():
-        for v in G.nodes():
-            if u != v and not G.has_edge(u, v):
-                weight = random.randint(1, 100)
-                G.add_edge(u, v, weight=weight)
-
-    return G
-
-
-def removeEdges(G):
-    # Remove edges between nodes with the same label
-    for u in G.nodes():
-        for v in G.nodes():
-            if u != v and G.nodes[u]['label'] == G.nodes[v]['label'] and G.has_edge(u, v):
-                G.remove_edge(u, v)
-    return G
+    return selected_nodes.values()
 
 
 def remove_edges_based_on_project_network(expert_network, project_network):
-    edges_to_remove = []
+    """
+    Removes edges from the expert_network that do not exist in the project_network.
 
-    for edge in expert_network.edges():
-        node1_label = expert_network.nodes[edge[0]]['label']
-        node2_label = expert_network.nodes[edge[1]]['label']
+    Args:
+        expert_network (networkx.Graph): The expert network graph.
+        project_network (networkx.Graph): The project network graph.
 
-        if not project_network.has_edge(node1_label, node2_label):
-            edges_to_remove.append(edge)
+    Returns:
+        networkx.Graph: The expert network graph with edges removed.
+    """
+    edges_to_remove = [(node1, node2) for node1, node2 in expert_network.edges()
+                       if not project_network.has_edge(expert_network.nodes[node1]['venues'][0],
+                                                       expert_network.nodes[node2]['venues'][0])]
 
     expert_network.remove_edges_from(edges_to_remove)
 
     return expert_network
 
 
-def createProjectNetwork(list):
-    project = nx.Graph()
-    project.add_edges_from(list)
-    return project
-
-
-def saveNetwork(G, file):
-    pickle.dump(G, open(f'{file}.pkl', 'wb'))
-
-
-def createRandomTeam(G, label_to_filter, team_size):
-    # Initialize a subgraph
-    subgraph = nx.Graph()
-
-    nodes_with_label = [node for node, data in G.nodes(
-        data=True) if 'label' in data and data['label'] == label_to_filter]
-
-    # Randomly select team_size nodes from the list
-    if len(nodes_with_label) >= team_size:
-        team_nodes = random.sample(nodes_with_label, team_size)
-    else:
-        print("Not enough nodes with the specified label to form a team.")
-        team_nodes = []
-
-    # Add the selected team nodes to the team subgraph
-    for node in team_nodes:
-        subgraph.add_node(node, label=label_to_filter)
-
-    return subgraph
-
-
-def getSubgraph(G, teams):
-    """
-        This is a subgraph of all the people across the teams. 
-    """
-    all_nodes = []
-    for team in teams:
-        team_nodes = [node for node in team.nodes]
-        all_nodes.extend(team_nodes)
-
-    return G.subgraph(all_nodes)
-
-
-def minimize_total_edge_weight_subset(graph_G, graph_P):
-    if graph_G is None or graph_P is None:
-        print("Error: One or both of the graphs is None.")
-        return None
-
-    if len(graph_P.nodes) > len(graph_G.nodes):
-        print("Error: Number of nodes in P is greater than the number of nodes in G.")
-        return None
-
-    # Start with a random node from G
-    subset = {random.choice(list(graph_G.nodes))}
-
-    while len(subset) < len(graph_P.nodes):
-        best_node = None
-        min_total_edge_weight = float('inf')
-
-        # Iterate over nodes in G not in the subset
-        for node in set(graph_G.nodes) - subset:
-            # Create a temporary subset with the new node
-            temp_subset = subset.copy()
-            temp_subset.add(node)
-
-            # Calculate the total edge weight in the subgraph
-            total_edge_weight = sum_edge_weights(graph_G.subgraph(temp_subset))
-
-            # Update the best node if the current node minimizes the total edge weight
-            if total_edge_weight < min_total_edge_weight:
-                min_total_edge_weight = total_edge_weight
-                best_node = node
-
-        # Add the best node to the subset
-        subset.add(best_node)
-
-    return graph_G.subgraph(subset)
-
-
-def sum_edge_weights(graph):
-    total_weight = 0
-
-    for _, _, data in graph.edges(data=True):
-        if 'weight' in data:
-            total_weight += data['weight']
-
-    return total_weight
-
-
-def minimize_max_edge_subset(graph_G, graph_P):
-    print("This function is running!")
-    if graph_G is None or graph_P is None:
-        print("Error: One or both of the graphs is None.")
-        return None
-
-    if len(graph_P.nodes) > len(graph_G.nodes):
-        print("Error: Number of nodes in P is greater than the number of nodes in G.")
-        return None
-
-    # Initialize the subset with nodes from P
-    subset = set()
-
-    # Add random node
-    key = random.choice(list(graph_G.nodes))
-    subset.add(key)  # graph_G.nodes[51506]
-    print(f"Random node is: {key}")
-    # print(f"The length of subset {len(subset)} vs length of project {len(graph_P.nodes)}")
-
-    # iteratively search for the best nodes
-    while len(subset) < len(graph_P.nodes):
-        print("Entered While loop \n")
-        best_node = None
-        min_max_edge_weight = float('inf')
-
-        # Iterate over nodes in G not in the subset
-        for node in set(graph_G.nodes) - subset:
-            # Create a temporary subset with the new node
-            temp_subset = subset.copy()
-            temp_subset.add(node)
-
-            # print(f"Current subset: {temp_subset}")
-
-            # Create a subgraph with the current subset
-            subgraph = graph_G.subgraph(temp_subset)
-
-            # Calculate the maximum edge weight in the subgraph
-            try:
-                max_edge_weight = max(subgraph.edges(
-                    data=True), key=lambda edge: edge[2]['weight'])[2]['weight']
-            except:
-                print("Error getting max_edge_weight, weight set to inf")
-                max_edge_weight = float('inf')
-
-            # Update the best node if the current node minimizes the maximum edge weight
-            if max_edge_weight < min_max_edge_weight:
-                min_max_edge_weight = max_edge_weight
-                best_node = node
-
-        # Add the best node to the subset
-        subset.add(best_node)
-        print("Current Subset is: ", subset)
-    return graph_G.subgraph(subset)
-
-
-def minimize_max_edge_subset_labels(graph_G, graph_P):
-    if graph_G is None or graph_P is None:
-        print("Error: One or both of the graphs is None.")
-        return None
-
-    if len(graph_P.nodes) > len(graph_G.nodes):
-        print("Error: Number of nodes in P is greater than the number of nodes in G.")
-        return None
-
-    # Initialize the subset with nodes from P
-    subset = set()
-
-    # Add random node
-    key = random.choice(list(graph_G.nodes))
-    subset.add(key)
-    labels = []
-    labels.append(graph_G.nodes[key]['label'])
-
-    # iteratively search for the best nodes
-    while len(subset) < len(graph_P.nodes):
-        best_node = None
-        min_max_edge_weight = float('inf')
-
-        # Iterate over nodes in G not in the subset
-        for node in set(graph_G.nodes) - subset:
-            # Create a temporary subset with the new node
-            temp_subset = subset.copy()
-            if graph_G.nodes[node]['label'] in labels:
-                pass
-            else:
-                temp_subset.add(node)
-
-                # Create a subgraph with the current subset
-                subgraph = graph_G.subgraph(temp_subset)
-
-                # Calculate the maximum edge weight in the subgraph
-                try:
-                    max_edge_weight = max(subgraph.edges(
-                        data=True), key=lambda edge: edge[2]['weight'])[2]['weight']
-                except:
-                    # print("Error getting max_edge_weight, weight set to inf")
-                    max_edge_weight = float('inf')
-
-                # Update the best node if the current node minimizes the maximum edge weight
-                if max_edge_weight < min_max_edge_weight:
-                    min_max_edge_weight = max_edge_weight
-                    best_node = node
-
-        # Add the best node to the subset
-        subset.add(best_node)
-        labels.append(graph_G.nodes[best_node]['label'])
-
-    return graph_G.subgraph(subset)
-
-
-def plotNetwork(G):
-
-    pos = nx.spring_layout(G)  # Position the nodes using a layout algorithm
-
-    edge_trace = go.Scatter(
-        x=[],
-        y=[],
-        line=dict(width=0.5, color="#888"),
-        hoverinfo="none",
-        mode="lines",
-    )
-
-    node_trace = go.Scatter(
-        x=[],
-        y=[],
-        text=[],
-        mode="markers",
-        hoverinfo="text",
-        marker=dict(
-            showscale=True,
-            colorscale="YlGnBu",
-            size=10,
-            colorbar=dict(
-                thickness=15,
-                title="Node Connections",
-                xanchor="left",
-                titleside="right",
-            ),
-        ),
-    )
-
-    for node in G.nodes():
-        x, y = pos[node]
-        node_trace["x"] += tuple([x])
-        node_trace["y"] += tuple([y])
-
-    for edge in G.edges():
-        x0, y0 = pos[edge[0]]
-        x1, y1 = pos[edge[1]]
-        edge_trace["x"] += tuple([x0, x1, None])
-        edge_trace["y"] += tuple([y0, y1, None])
-
-    # Create the graph figure
-    fig = go.Figure(
-        data=[edge_trace, node_trace],
-        layout=go.Layout(
-            showlegend=False,
-            hovermode="closest",
-            margin=dict(b=0, l=0, r=0, t=0),
-        ),
-    )
-
-    # Display the interactive graph
-    fig.show()
-
-# def getNextBest(node, network, project_network):
-#     """
-#         This subroutine returns the best nodes in the adjacent node
-#     """
-#     node_label = network.nodes[node]['label']
-#     neighbors = list(project_network.neighbors(node_label))
-#     list_of_selected_nodes = []
-#     try:
-#         for label in neighbors:
-#             labeled_neighbors = [n for n in network.neighbors(
-#                 node) if network.nodes[n]['label'] == label]
-#             for u in labeled_neighbors:
-#                 max_weight = 0
-#                 selected_node = None
-#                 if network[node][u]['weight'] > max_weight:
-#                     max_weight = network[node][u]['weight']
-#                     selected_node = u
-#             list_of_selected_nodes.append(selected_node)
-#             # print("..")
-#         # visited_array.append(node)
-#     except:
-#         print("Node has no neighbors")
-
-#     return list_of_selected_nodes
-
-
-# def getCoordinator(network, project_network):
-
-#     key = random.choice(list(network.nodes))
-#     visited_array = []
-#     first_list = getNextBest(key, network, project_network)
-#     coordinators = []
-#     coordinators.extend(first_list)
-#     labels = set([network.nodes[n]['label'] for n in first_list])
-#     visited_array.append(key)
-#     while len(coordinators) < len(project_network):
-#         for i in coordinators:
-#             # and network.nodes[i]['label'] not in list(labels)
-#             if i not in visited_array:
-#                 key = i
-#                 new_list = getNextBest(key, network, project_network)
-#                 coordinators.extend(new_list)
-#                 visited_array.append(key)
-#                 print(f"new key is : {key}")
-#                 break
-#         new_list = getNextBest(key, network, project_network)
-#         print(f"new list : {new_list}")
-#         labels = labels.union(set([network.nodes[n]['label']
-#                               for n in new_list]))  # Update
-#         print(f"Updated labels : {labels}")
-#         # coordinators.extend(new_list)
-#         print(f"{len(coordinators)} coordinators added")
-
-#     return coordinators
-
-
-def minimize_max_edge_subset_connected(graph_G, graph_P):
-    """
-        This algorithm checks the connectivity of the graph before it runs the maximum weight.
-    """
-    if graph_G is None or graph_P is None:
-        print("Error: One or both of the graphs is None.")
-        return None
-
-    if len(graph_P.nodes) > len(graph_G.nodes):
-        print("Error: Number of nodes in P is greater than the number of nodes in G.")
-        return None
-
-    # Initialize the subset with a random node from G
-    random_node = random.choice(list(graph_G.nodes))
-    subset = {random_node}
-
-    while len(subset) < len(graph_P.nodes):
-        best_node = None
-        min_max_edge_weight = float('inf')
-
-        # Iterate over nodes in G not in the subset
-        for node in set(graph_G.nodes) - subset:
-            # Create a temporary subset with the new node
-            temp_subset = subset.copy()
-            temp_subset.add(node)
-
-            # Create a subgraph with the current subset
-            subgraph = graph_G.subgraph(temp_subset)
-
-            # Check if the subgraph is connected
-            if nx.is_connected(subgraph):
-                # Calculate the maximum edge weight in the subgraph
-                max_edge_weight = max(subgraph.edges(
-                    data=True), key=lambda edge: edge[2]['weight'])[2]['weight']
-
-                # Update the best node if the current node minimizes the maximum edge weight
-                if max_edge_weight < min_max_edge_weight:
-                    min_max_edge_weight = max_edge_weight
-                    best_node = node
-
-        # Add the best node to the subset
-        subset.add(best_node)
-
-    return graph_G.subgraph(subset)
-
-
 def compute_influence(graph):
+    """
+    Computes the influence score for each node in the given graph.
+
+    Parameters:
+    graph (networkx.Graph): The graph for which to compute the influence score.
+
+    Returns:
+    networkx.Graph: The graph with influence scores assigned to each node.
+    """
+
     if graph is None:
         print("Error: Graph is None.")
         return None
 
-    for node in graph.nodes:
+    # Compute influence scores
+    for node, data in graph.nodes(data=True):
         total_weight = sum(edge['weight']
                            for _, _, edge in graph.edges(node, data=True))
-        graph.nodes[node]['influence'] = total_weight
+        num_papers = len(data["papers"])
+        num_coauthors = len(data["coauthors"])
+        influence = num_papers + 1.5 * num_coauthors + total_weight
+        data['influence'] = influence
 
     # Scale scores to 100
-    max_influence = max(graph.nodes[node]['influence'] for node in graph.nodes)
+    max_influence = max(data['influence']
+                        for _, data in graph.nodes(data=True))
     scale_factor = 100 / max_influence
 
-    for node in graph.nodes:
-        graph.nodes[node]['influence'] *= scale_factor
+    for _, data in graph.nodes(data=True):
+        data['influence'] *= scale_factor
 
     return graph
 
 
-def find_highest_influence(graph):
-    if graph is None:
-        print("Error: Graph is None.")
-        return None
+def get_top_node_per_venue(graph):
+    """
+    Returns a dictionary containing the top node per venue based on influence score.
 
-    max_influence_node = max(graph.nodes, key=lambda node: (
-        graph.nodes[node]['influence'], node))
-    return max_influence_node
+    Args:
+        graph (networkx.Graph): The input graph representing the network.
+
+    Returns:
+        tuple: A tuple containing two elements:
+            - A dictionary where the keys are venues and the values are the top nodes for each venue.
+            - A list of the top nodes for all venues.
+    """
+    top_nodes = {}
+    nodes = []
+    graph = compute_influence(graph)
+    for node in graph.nodes:
+        venue = graph.nodes[node]['venues'][0]
+        if venue not in top_nodes:
+            top_nodes[venue] = node
+        elif graph.nodes[node]['influence'] > graph.nodes[top_nodes[venue]]['influence']:
+            top_nodes[venue] = node
+
+    return top_nodes, list(top_nodes.values())
 
 
-def maximize_total_edge_weight_subset_labels(graph_G, graph_P):
-    if graph_G is None or graph_P is None:
-        print("Error: One or both of the graphs is None.")
-        return None
+def createProjectNetwork(edges):
+    """
+    Creates a project network graph from a list of edges.
 
-    if len(graph_P.nodes) > len(graph_G.nodes):
-        print("Error: Number of nodes in P is greater than the number of nodes in G.")
+    Parameters:
+    edges (list): A list of edges representing the connections between nodes in the project network.
+
+    Returns:
+    networkx.Graph: A networkx graph representing the project network.
+    """
+    project = nx.Graph()
+    project.add_edges_from(edges)
+    return project
+
+
+def sum_edge_weights(graph):
+    """
+    Calculates the total weight of all edges in the given graph.
+
+    Parameters:
+    graph (networkx.Graph): The graph to calculate the total weight of.
+
+    Returns:
+    float: The total weight of all edges in the graph.
+    """
+    return sum(data.get('weight', 0) for _, _, data in graph.edges(data=True))
+
+
+def monte_carlo(f, graph_G, graph_P, num_iter):
+    """
+    Perform Monte Carlo simulation to estimate the average communication efficiency.
+
+    Parameters:
+    f (function): A function that takes in graph_G and graph_P as input and returns a graph.
+    graph_G (Graph): The network of experts.
+    graph_P (Graph): The project network.
+    num_iter (int): The number of iterations for the simulation.
+
+    Returns:
+    float: The average communication efficiency rounded to 2 decimal places.
+    """
+
+    comm_eff = sum(sum_edge_weights(f(graph_G, graph_P))
+                   for _ in range(num_iter))
+    avg_comm_eff = comm_eff / num_iter
+    print(f"Average Communication efficiency is : {avg_comm_eff}")
+    return round(avg_comm_eff, 2)
+
+
+def randomGreedy(graph_G, graph_P):
+    """
+    This function implements a random greedy algorithm to find a subgraph of graph_G 
+    that has the same number of nodes as graph_P. The algorithm starts with a random node 
+    from graph_G and iteratively adds the node that maximizes the total edge weight of the subgraph.
+
+    Parameters:
+    graph_G (networkx.Graph): The graph to find the subgraph in.
+    graph_P (networkx.Graph): The graph to match the number of nodes with.
+
+    Returns:
+    networkx.Graph: The resulting subgraph of graph_G.
+    """
+    if not graph_G or not graph_P or len(graph_P.nodes) > len(graph_G.nodes):
+        print("Error: Invalid input graphs.")
         return None
 
     # Start with a random node from G
-    key = random.choice(list(graph_G.nodes))
-    subset = set()
-    subset.add(key)
-    labels = []
-    labels.append(graph_G.nodes[key]['label'])
+    subset = {random.choice(list(graph_G.nodes))}
+    labels = [graph_G.nodes[next(iter(subset))]['venues'][0]]
 
     while len(subset) < len(graph_P.nodes):
-        best_node = None
-        min_total_edge_weight = 0.0
+        # Find the node that maximizes the total edge weight of the subgraph
+        candidates = [(node, sum_edge_weights(graph_G.subgraph(list(subset) + [node])))
+                      for node in set(graph_G.nodes) - subset
+                      if graph_G.nodes[node]['venues'][0] not in labels]
 
-        # Iterate over nodes in G not in the subset
-        for node in set(graph_G.nodes) - subset:
-            # Create a temporary subset with the new node
-            temp_subset = subset.copy()
-            if graph_G.nodes[node]['label'] not in labels:
-                temp_subset.add(node)
-
-                # Calculate the total edge weight in the subgraph
-                total_edge_weight = sum_edge_weights(
-                    graph_G.subgraph(temp_subset))
-
-                # Update the best node if the current node minimizes the total edge weight
-                if total_edge_weight > min_total_edge_weight:
-                    min_total_edge_weight = total_edge_weight
-                    best_node = node
+        if not candidates:
+            print("Warning: No suitable node found. Terminating the loop.")
+            break
 
         # Add the best node to the subset
+        best_node, _ = max(candidates, key=lambda x: x[1])
         subset.add(best_node)
-        labels.append(graph_G.nodes[best_node]['label'])
+        labels.append(graph_G.nodes[best_node]['venues'][0])
 
     return graph_G.subgraph(subset)
 
 
-def sum_edge_weights(graph):
-    total_weight = 0
-
-    for _, _, data in graph.edges(data=True):
-        if 'weight' in data:
-            total_weight += data['weight']
-
-    return total_weight
-
-
-def compute_influence_within_groups(graph):
+def influenceGreedy(graph_G, graph_P):
     """
-        This takes in the entire network and returns the most influential nodes in each team as a list
+    This function implements a greedy algorithm to find a subgraph of graph_G 
+    that has the same number of nodes as graph_P. The algorithm starts with a random node 
+    from the top nodes per venue in graph_G and iteratively adds the node that maximizes 
+    the total edge weight of the subgraph.
+
+    Parameters:
+    graph_G (networkx.Graph): The graph to find the subgraph in.
+    graph_P (networkx.Graph): The graph to match the number of nodes with.
+
+    Returns:
+    networkx.Graph: The resulting subgraph of graph_G.
     """
-    if graph is None:
-        print("Error: Graph is None.")
+    if not graph_G or not graph_P or len(graph_P.nodes) > len(graph_G.nodes):
+        print("Error: Invalid input graphs.")
         return None
 
-    max_influence_nodes = {}  # To store the node with the highest influence for each label
+    # Start with a random node from the top nodes per venue
+    top_nodes = get_top_node_per_venue(graph_G)
+    key = random.choice(top_nodes[1])
+    subset = {key}
+    labels = [graph_G.nodes[key]['venues'][0]]
 
-    for label in set(nx.get_node_attributes(graph, 'label').values()):
-        group_nodes = [node for node in graph.nodes if graph.nodes[node]['label'] == label]
+    while len(subset) < len(graph_P.nodes):
+        # Find the node that maximizes the total edge weight of the subgraph
+        candidates = [(node, sum_edge_weights(graph_G.subgraph(list(subset) + [node])))
+                      for node in set(graph_G.nodes) - subset
+                      if graph_G.nodes[node]['venues'][0] not in labels]
 
-        max_total_weight = max(sum(graph[node1][node2]['weight'] for node1, node2 in graph.edges(group_nodes)) for group_nodes in group_nodes)
-        scale_factor = 100 / max_total_weight if max_total_weight != 0 else 0
+        if not candidates:
+            print("Warning: No suitable node found. Terminating the loop.")
+            break
 
-        max_node = None
-        max_influence = 0
+        # Add the best node to the subset
+        best_node, _ = max(candidates, key=lambda x: x[1])
+        subset.add(best_node)
+        labels.append(graph_G.nodes[best_node]['venues'][0])
 
-        for node in group_nodes:
-            total_weight = sum(graph[node1][node2]['weight'] for node1, node2 in graph.edges(node))
-            influence_score = round(total_weight * scale_factor, 2)
-            graph.nodes[node]['influence'] = influence_score
-
-            # Check if the current node has higher influence
-            if influence_score > max_influence:
-                max_influence = influence_score
-                max_node = node
-
-        max_influence_nodes[label] = {'node': max_node, 'influence': max_influence}
-
-    return max_influence_nodes
+    return graph_G.subgraph(subset)
 
 
-# Top nodes only
-def top_influential_nodes(network):
-    top_nodes = [node for node in network.nodes if network.nodes[node]['influence'] == 100]
-    return network.subgraph(top_nodes)
+def randomMonteCarlo(graph, num_iter):
+    total_weight = 0
+
+    for _ in range(num_iter):
+        total_weight += sum_edge_weights(graph.subgraph(randomAlgo(graph)))
+
+    avg_weight = round(total_weight / num_iter, 2)
+    return avg_weight
+
+    ####### PREPROCESSING #######
 
 
-def monte_carlo(graph_G, graph_P, num_iter):
-    comm_eff = 0
-    selected_nodes = {}
-    for i in range(num_iter):
-        best = maximize_total_edge_weight_subset_labels(graph_G, graph_P)
-        selected_nodes.union(set(best.nodes))
-        eff = sum_edge_weights(best)
-        comm_eff = comm_eff + eff
-    avg_comm_eff = comm_eff/num_iter
+def process_paper_data(input_file, output_file, sample_size=None):
+    """
+    Parses paper data from a text file, saves it as a pickle file, and creates a graph from the author data.
 
-    return selected_nodes, avg_comm_eff
+    Parameters:
+    input_file (str): The path to the text file containing the paper data.
+    output_file (str): The path to the output file to save the parsed paper data to.
+    sample_size (int, optional): The number of random samples to take from the author data. If None, all author data is used.
+    """
+    # Parse paper data and save it as a pickle file
+    print('Parsing paper data...')
+    parse_and_save_paper_data(input_file, output_file)
+    print('Paper data parsed and saved.')
+
+    # Load parsed paper data
+    print('Loading parsed paper data...')
+    with open(output_file, 'rb') as pickle_file:
+        papers = pickle.load(pickle_file)
+    print('Parsed paper data loaded.')
+
+    # Get list of authors
+    print('Getting list of authors...')
+    list_of_authors = set(
+        author for paper in papers for author in paper.get('authors', []))
+    print('List of authors obtained.')
+
+    # Get author data
+    print('Getting author data...')
+    authors_data = get_author_data(list_of_authors, papers)
+    print('Author data obtained.')
+
+    # If a sample size is provided, take a random sample of the author data
+    if sample_size is not None:
+        print(f'Taking a random sample of {sample_size} items...')
+        authors_data = random.sample(authors_data, sample_size)
+        print('Sample obtained.')
+
+    # Create a graph from the author data
+    print('Creating graph from author data...')
+    G = create_graph_from_data(authors_data)
+    print('Graph created.')
+
+    # Save the graph as a pickle file
+    print('Saving graph...')
+    with open('graph.pkl', 'wb') as file:
+        pickle.dump(G, file)
+    print('Graph saved.')
+
+
+# process_paper_data('dblp_data.txt', 'papers.pkl', 'author_data.pkl')
+
+
+def parse_and_save_paper_data(input_file, output_file):
+    """
+    Parses paper data from a text file and saves it as a pickle file.
+
+    Parameters:
+    input_file (str): The path to the text file containing the paper data.
+    output_file (str): The path to the output file to save the parsed paper data to.
+    """
+    def parse_paper_data(data):
+        paper = {}
+        lines = data.split('\n')
+
+        for line in lines:
+            if line.startswith("#*"):
+                paper['title'] = line[2:].strip()
+            elif line.startswith("#@"):
+                paper['authors'] = line[2:].strip().split(', ')
+            elif line.startswith("#c"):
+                paper['venue'] = line[2:].strip()
+
+        return paper
+
+    with open(input_file, 'r', encoding='utf-8') as file:
+        # assuming each paper is separated by two newlines
+        papers_data = file.read().split('\n\n')
+
+    papers = [parse_paper_data(paper_data) for paper_data in papers_data]
+
+    # Save as pickle
+    with open(output_file, 'wb') as pickle_file:
+        pickle.dump(papers, pickle_file)
+
+
+def get_author_data(list_of_authors, papers):
+    id_value = 0
+    authors_data = []
+    for author in list_of_authors:
+        user = Author()
+        user.id = id_value
+        user.name = author
+        for paper in papers:
+            # print(paper)
+            authors_in_paper = paper.get('authors', '')
+            if authors_in_paper:
+                authors_in_paper = set(authors_in_paper[0].split(','))
+            else:
+                authors_in_paper = set()
+            if len(set([author]).intersection(authors_in_paper)) == 1:
+                user.coauthors.extend(set(authors_in_paper)-set([user.name]))
+                user.papers.extend(
+                    set([paper.get('title')]) - set(user.papers))
+                user.venues.extend(
+                    set([paper.get('venue')]) - set(user.venues))
+                # Update the number of papers published at each venue
+                user.venue_papers[paper.get('venue')] = user.venue_papers.get(
+                    paper.get('venue'), 0) + 1
+
+        id_value = id_value + 1
+        authors_data.append(user.author_info())
+
+    return authors_data
+
+
+class Author:
+    """
+    Represents an author in the DBLP analysis.
+
+    Attributes:
+        id (int): The ID of the author.
+        name (str): The name of the author.
+        coauthors (list): A list of coauthors of the author.
+        venues (list): A list of venues where the author has published.
+        papers (list): A list of papers authored by the author.
+        venue_papers (dict): A dictionary mapping venues to the papers published by the author in each venue.
+    """
+
+    def __init__(self):
+        self.id = None
+        self.name = None
+        self.coauthors = []
+        self.venues = []
+        self.papers = []
+        self.venue_papers = {}
+
+    def author_info(self):
+        """
+        Returns a dictionary containing information about the author.
+
+        Returns:
+            dict: A dictionary with the following keys:
+                - 'id': The ID of the author.
+                - 'author': The name of the author.
+                - 'coauthors': A list of coauthors of the author.
+                - 'venues': A list of venues where the author has published.
+                - 'papers': A list of papers authored by the author.
+                - 'num_of_papers': The number of papers authored by the author.
+                - 'venue_papers': A dictionary mapping venues to the papers published by the author in each venue.
+        """
+        dictionary = {
+            'id': self.id,
+            'author': self.name,
+            'coauthors': self.coauthors,
+            'venues': self.venues,
+            'papers': self.papers,
+            'num_of_papers': self.get_num_of_papers(),
+            'venue_papers': self.venue_papers
+        }
+        return dictionary
+
+    def get_num_of_papers(self):
+        """
+        Returns the number of papers authored by the author.
+
+        Returns:
+            int: The number of papers authored by the author.
+        """
+        return len(self.papers)
+
+
+def create_graph_from_data(data):
+    """
+    Creates a graph from author data.
+
+    Parameters:
+    data (list): A list of dictionaries representing the author data.
+
+    Returns:
+    networkx.Graph: A networkx graph representing the author data.
+    """
+    # Create a graph
+    G = nx.Graph()
+
+    # Iterate through the data list and add nodes and edges to the graph
+    for item in data:
+        author_id = item['id']
+        author_name = item['author']
+        coauthors = item['coauthors']
+        venue_papers = item['venue_papers']
+        papers = item['papers']
+        num_of_papers = item['num_of_papers']
+
+        # If there is more than one venue, set the venue to the one with the highest value in venue_papers
+        if len(item['venues']) > 1:
+            venue = max(venue_papers, key=venue_papers.get)
+        else:
+            venue = item['venues'][0]
+
+        # Add nodes with data
+        G.add_node(author_name, id=author_id, author=author_name, coauthors=coauthors,
+                   venue=venue, papers=papers, num_of_papers=num_of_papers)
+
+        # Add edges with weights
+        for coauthor in coauthors:
+            if G.has_edge(author_name, coauthor):
+                G[author_name][coauthor]['weight'] += 1
+            else:
+                G.add_edge(author_name, coauthor, weight=1)
+
+    # Update node labels from author names to author IDs
+    node_mapping = {item['author']: item['id'] for item in data}
+    G = nx.relabel_nodes(G, node_mapping, copy=False)
+
+    return G

@@ -1,8 +1,11 @@
+from collections import defaultdict
+import itertools
 import json
 import re
 import networkx as nx
 import pickle
 import random
+import chime
 
 # Find connected components
 connected_components = list(nx.connected_components(G))
@@ -200,6 +203,26 @@ if __name__ == "__main__":
     main()
 
 
+def filter_and_save_papers(papers_file, target_venues, output_file):
+    """
+    Filters papers by venue and saves the filtered papers to a new file.
+
+    Parameters:
+    papers_file (str): The path to the pickle file containing the papers.
+    target_venues (set): A set of target venues to filter by.
+    output_file (str): The path to the output file to save the filtered papers to.
+    """
+    import pickle
+
+    with open(papers_file, 'rb') as pickle_file:
+        papers = pickle.load(pickle_file)
+
+    filtered_papers = [paper for paper in papers if paper.get('venue', '').lower() in target_venues]
+
+    with open(output_file, 'wb') as filtered_pickle_file:
+        pickle.dump(filtered_papers, filtered_pickle_file)
+
+
 # Count papers in a venue
 
 
@@ -321,12 +344,44 @@ for node1, data1 in network.nodes(data=True):
             network.add_edge(node1, node2, weight=0)
 
 
+# Add edges between authors who share a common neighbor
+for node1, node2 in itertools.combinations(network.nodes, 2):
+    common_neighbors = set(network.neighbors(
+        node1)) & set(network.neighbors(node2))
+    if not network.has_edge(node1, node2) and common_neighbors:
+        network.add_edge(node1, node2, weight=random.randint(1, 100))
+
+# Add edges between nodes with the same venue and no existing edge
+venue_dict = defaultdict(list)
+for node, data in network.nodes(data=True):
+    for venue in data['venues']:
+        venue_dict[venue].append(node)
+
+for nodes in venue_dict.values():
+    for node1, node2 in itertools.combinations(nodes, 2):
+        if not network.has_edge(node1, node2):
+            network.add_edge(node1, node2, weight=random.randint(1, 100))
+
+
 # # Add edges between authors who share a common neighbor
 # for node1, data1 in network.nodes(data=True):
 #     for node2, data2 in network.nodes(data=True):
 #         if node1 != node2 and not network.has_edge(node1, node2):
 #             network.add_edge(node1, node2, weight=0.1)
 
+
+# Get all pairs of non-connected nodes
+non_connected_edges = list(nx.non_edges(network))
+chime.success()
+
+# Add edges between non-connected nodes
+for node1, node2 in non_connected_edges:
+    weight = random.randint(1, 100)
+    network.add_edge(node1, node2, weight=weight)
+# Add random weight to existing edges
+for node1, node2, data in network.edges(data=True):
+    if 'weight' not in data:
+        data['weight'] = random.randint(1, 100)
 
 # Save the new network to a pickle file
 with open('network.pkl', 'wb') as new_net:
@@ -352,11 +407,12 @@ subgraph = network.subgraph(top_10_authors)
 network = pickle.load(open('one_venue_network.pkl', 'rb'))
 
 # Scaling the weights of the edges to be as a percentage of the maximum edge weight
-import networkx as nx
+
 
 def scale_edge_weights(graph):
     # Step 1: Find the maximum edge weight
-    max_edge_weight = max([data['weight'] for _, _, data in graph.edges(data=True)], default=1)
+    max_edge_weight = max([data['weight']
+                          for _, _, data in graph.edges(data=True)], default=1)
 
     # Step 2: Scale each edge weight as a percentage of the maximum edge weight
     for u, v, data in graph.edges(data=True):
@@ -365,6 +421,7 @@ def scale_edge_weights(graph):
 
     return graph
 # Example usage:
+
 
 net = scale_edge_weights(network)
 
@@ -512,6 +569,7 @@ project_1 = [('NIPS', 'IJCAI'), ('NIPS', 'AAAI'), ('NIPS', 'AAMAS'), ('NIPS', 'K
 
 project_1 = createProjectNetwork(project_1)
 
+
 def monte_carlo(f, graph_G, graph_P, num_iter):
     comm_eff = 0
     selected_nodes = set()
@@ -526,5 +584,8 @@ def monte_carlo(f, graph_G, graph_P, num_iter):
 
     return selected_nodes, avg_comm_eff
 
-coordinators, avg_comm_eff = monte_carlo(randomGreedy,subgraph, project_1, 1000)
-coordinators, avg_comm_eff = monte_carlo(influenceGreedy,subgraph, project_1, 1000)
+
+coordinators, avg_comm_eff = monte_carlo(
+    randomGreedy, subgraph, project_1, 1000)
+coordinators, avg_comm_eff = monte_carlo(
+    influenceGreedy, subgraph, project_1, 1000)
