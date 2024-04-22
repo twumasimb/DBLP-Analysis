@@ -2,6 +2,7 @@
 /coauthorship_graph.gml
 /dataset.pkl
 /dblp_data.txt
+/dblp_data.pkl
 /filtered_dataset.pkl
 /weighted_network.pkl
 /largest_cc.pkl
@@ -9,3 +10,5 @@
 /one_venue_network.pkl
 new_weighted_network.pkl
 debug.log
+/author_data.pkl
+/net_100.pkl

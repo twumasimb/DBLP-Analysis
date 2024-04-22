@@ -589,3 +589,227 @@ coordinators, avg_comm_eff = monte_carlo(
     randomGreedy, subgraph, project_1, 1000)
 coordinators, avg_comm_eff = monte_carlo(
     influenceGreedy, subgraph, project_1, 1000)
+
+
+#================================================================================================# April 22, 2024
+def randomAlgo(network):
+
+    # Assuming G is your graph
+    venues = nx.get_node_attributes(network, 'venues').values()
+
+    # Flatten the list of venues
+    flattened_venues = [venue for sublist in venues for venue in sublist]
+
+    # Get unique venues
+    unique_venues = set(flattened_venues)
+
+    selected_nodes = {}
+    for venue in unique_venues:
+        # get nodes with this venue
+        nodes = [n for n, v in nx.get_node_attributes(network, 'venues').items() if venue in v]
+        
+        # randomly select a node
+        selected_node = random.choice(nodes)
+        
+        selected_nodes[venue] = selected_node
+
+    return selected_nodes.values()
+
+
+def remove_edges_based_on_project_network(expert_network, project_network):
+    edges_to_remove = []
+
+    for edge in expert_network.edges():
+        node1_label = expert_network.nodes[edge[0]]['venues'][0]
+        node2_label = expert_network.nodes[edge[1]]['venues'][0]
+
+        if not project_network.has_edge(node1_label, node2_label):
+            edges_to_remove.append(edge)
+
+    expert_network.remove_edges_from(edges_to_remove)
+
+    return expert_network
+
+
+
+def compute_influence(graph):
+    if graph is None:
+        print("Error: Graph is None.")
+        return None
+
+    for node in graph.nodes:
+        total_weight = sum(edge['weight']
+                           for _, _, edge in graph.edges(node, data=True))
+        num_papers = len(graph.nodes[node]["papers"])
+        num_coauthors = len(graph.nodes[node]["coauthors"])
+        influence = num_papers + 1.5 * num_coauthors + total_weight
+        graph.nodes[node]['influence'] = influence
+
+    # Scale scores to 100
+    max_influence = max(graph.nodes[node]['influence'] for node in graph.nodes)
+    scale_factor = 100 / max_influence
+
+    for node in graph.nodes:
+        graph.nodes[node]['influence'] *= scale_factor
+
+    return graph
+
+
+def get_top_node_per_venue(graph):
+    top_nodes = {}
+    nodes = []
+    graph = compute_influence(graph)
+    for node in graph.nodes:
+        venue = graph.nodes[node]['venues'][0]
+        if venue not in top_nodes:
+            top_nodes[venue] = [node]
+        elif graph.nodes[node]['influence'] > graph.nodes[top_nodes[venue][0]]['influence']:
+            top_nodes[venue] = [node]
+        elif graph.nodes[node]['influence'] == graph.nodes[top_nodes[venue][0]]['influence']:
+            top_nodes[venue].append(node)
+    for item in top_nodes.values():
+        nodes.extend(item)
+    return top_nodes, nodes, graph.subgraph([node for nodes in top_nodes.values() for node in nodes])
+
+
+def randomGreedy(graph_G, graph_P):
+    """
+    This function implements a random greedy algorithm to find a subgraph of graph_G 
+    that has the same number of nodes as graph_P. The algorithm starts with a random node 
+    from graph_G and iteratively adds the node that maximizes the total edge weight of the subgraph.
+
+    Parameters:
+    graph_G (networkx.Graph): The graph to find the subgraph in.
+    graph_P (networkx.Graph): The graph to match the number of nodes with.
+
+    Returns:
+    networkx.Graph: The resulting subgraph of graph_G.
+    """
+    if not graph_G or not graph_P or len(graph_P.nodes) > len(graph_G.nodes):
+        print("Error: Invalid input graphs.")
+        return None
+
+    # Start with a random node from G
+    subset = {random.choice(list(graph_G.nodes))}
+    labels = [graph_G.nodes[next(iter(subset))]['venues'][0]]
+
+    while len(subset) < len(graph_P.nodes):
+        # Find the node that maximizes the total edge weight of the subgraph
+        candidates = [(node, sum_edge_weights(graph_G.subgraph(list(subset) + [node])))
+                      for node in set(graph_G.nodes) - subset
+                      if graph_G.nodes[node]['venues'][0] not in labels]
+
+        if not candidates:
+            print("Warning: No suitable node found. Terminating the loop.")
+            break
+
+        # Add the best node to the subset
+        best_node, _ = max(candidates, key=lambda x: x[1])
+        subset.add(best_node)
+        labels.append(graph_G.nodes[best_node]['venues'][0])
+
+    return graph_G.subgraph(subset)
+
+def influenceGreedy(graph_G, graph_P):
+    """
+    This function implements a greedy algorithm to find a subgraph of graph_G 
+    that has the same number of nodes as graph_P. The algorithm starts with a random node 
+    from the top nodes per venue in graph_G and iteratively adds the node that maximizes 
+    the total edge weight of the subgraph.
+
+    Parameters:
+    graph_G (networkx.Graph): The graph to find the subgraph in.
+    graph_P (networkx.Graph): The graph to match the number of nodes with.
+
+    Returns:
+    networkx.Graph: The resulting subgraph of graph_G.
+    """
+    if not graph_G or not graph_P or len(graph_P.nodes) > len(graph_G.nodes):
+        print("Error: Invalid input graphs.")
+        return None
+
+    # Start with a random node from the top nodes per venue with rank 1
+    top_nodes = get_top_node_per_venue(graph_G)
+    key = None
+    for node in top_nodes[1]:
+        if graph_G.nodes[node]['rank'] == 1:
+            key = node
+            break
+
+    if key is None:
+        print("Warning: No suitable node found with rank 1. Using a random node instead.")
+        key = random.choice(top_nodes[1])
+
+    subset = {key}
+    labels = [graph_G.nodes[key]['venues'][0]]
+
+    while len(subset) < len(graph_P.nodes):
+        # Find the node that maximizes the total edge weight of the subgraph
+        candidates = [(node, sum_edge_weights(graph_G.subgraph(list(subset) + [node])))
+                      for node in set(graph_G.nodes) - subset
+                      if graph_G.nodes[node]['venues'][0] not in labels]
+
+        if not candidates:
+            print("Warning: No suitable node found. Terminating the loop.")
+            break
+
+        # Add the best node to the subset
+        best_node, _ = max(candidates, key=lambda x: x[1])
+        subset.add(best_node)
+        labels.append(graph_G.nodes[best_node]['venues'][0])
+
+    return graph_G.subgraph(subset)
+
+
+def randomMonteCarlo(graph, num_iter):
+    total_weight = 0
+
+    for _ in range(num_iter):
+        total_weight += sum_edge_weights(graph.subgraph(randomAlgo(graph)))
+
+    avg_weight = round(total_weight / num_iter, 2)
+    print(f"Using Random : {avg_weight}")
+    return avg_weight
+
+
+top_10_authors = []
+# Create subgraphs for each conference with the top 10 authors by the number of papers
+conferences = []
+for venue in nx.get_node_attributes(network, 'venues').values():
+    conferences.extend(venue)
+
+for conference in set(conferences):
+    conference_authors = [author for author, data in network.nodes(data=True) if data['venues'][0] == conference]
+    top_authors = sorted(conference_authors, key=lambda author: (network.nodes[author]['venues'][0], network.nodes[author]['influence']), reverse=True)[:10]
+    for i, author in enumerate(top_authors):
+        network.nodes[author]['rank'] = i + 1
+    top_10_authors.extend(top_authors)
+
+subgraph = network.subgraph(top_10_authors)
+
+
+project_1 = [('NIPS', 'IJCAI'), ('NIPS', 'AAAI'), ('NIPS', 'AAMAS'), ('NIPS', 'KDD'), ('IJCAI', 'AAAI'), ('IJCAI', 'AAMAS'), ('IJCAI', 'KDD'), ('AAAI', 'AAMAS'), ('AAAI', 'KDD'), ('AAMAS', 'KDD')]
+project_1 = createProjectNetwork(project_1)
+# Remove Edges to match project network
+network_based_on_project_1 = remove_edges_based_on_project_network(subgraph.copy(), project_1)
+
+
+influence_greedy_coordinators = influenceGreedy(network_based_on_project_3, project_3)
+print("Influence Greedy : Project 3")
+for node in influence_greedy_coordinators.nodes:
+    print(f'{node}: {influence_greedy_coordinators.nodes[node]["venues"][0]}')
+print(f"project 3: {influence_greedy_coordinators}")
+
+
+nodes_with_aamas = [node for node, data in network_based_on_project_2.nodes(data=True) if 'AAMAS' in data['venues']]
+nodes_with_aamas_sorted = sorted(nodes_with_aamas, key=lambda node: network_based_on_project_2.nodes[node]['rank'])
+
+for node in nodes_with_aamas_sorted:
+    venue = network_based_on_project_2.nodes[node]['venues'][0]
+    rank = network_based_on_project_2.nodes[node]['rank']
+    print(f"Node: {node}, Venue: {venue}, Rank: {rank}")
+
+
+nodes_with_aamas = [node for node, data in network_based_on_project_2.nodes(data=True) if 'AAMAS' in data['venues']]
+for node in nodes_with_aamas:
+    print(f"Node: {node}, Data: {network_based_on_project_2.nodes[node]}")

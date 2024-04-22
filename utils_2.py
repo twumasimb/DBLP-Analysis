@@ -6,25 +6,35 @@ import chime
 
 def randomAlgo(network):
     """
-    Randomly selects a node from each unique venue in the network.
+    Randomly selects a node from each unique venue in the given network.
 
     Parameters:
-    - network: The network graph.
+    - network (networkx.Graph): The network graph containing nodes with venues attribute.
 
     Returns:
-    - A list of selected nodes.
+    - list: A list of selected nodes, one for each unique venue in the network.
     """
-    # Get node venues
-    node_venues = nx.get_node_attributes(network, 'venues')
+
+    # Assuming G is your graph
+    venues = nx.get_node_attributes(network, 'venues').values()
+
+    # Flatten the list of venues
+    flattened_venues = [venue for sublist in venues for venue in sublist]
+
+    # Get unique venues
+    unique_venues = set(flattened_venues)
 
     selected_nodes = {}
-    for node, venues in node_venues.items():
-        for venue in venues:
-            # If the venue is not already in selected_nodes, add the node
-            if venue not in selected_nodes:
-                selected_nodes[venue] = node
+    for venue in unique_venues:
+        # get nodes with this venue
+        nodes = [n for n, v in nx.get_node_attributes(network, 'venues').items() if venue in v]
+        
+        # randomly select a node
+        selected_node = random.choice(nodes)
+        
+        selected_nodes[venue] = selected_node
 
-    return selected_nodes.values()
+    return list(selected_nodes.values())
 
 
 def remove_edges_based_on_project_network(expert_network, project_network):
@@ -320,6 +330,8 @@ def parse_and_save_paper_data(input_file, output_file):
                 paper['authors'] = line[2:].strip().split(', ')
             elif line.startswith("#c"):
                 paper['venue'] = line[2:].strip()
+            elif line.startswith("#t"):
+                paper['year'] = int(line[2:].strip())
 
         return paper
 
