@@ -1,6 +1,7 @@
 import pickle
 import random
 import networkx as nx
+random.seed(42)
 
 
 def createProjectNetwork(list):
@@ -234,6 +235,24 @@ def get_node_rank(graph, node):
     # print(ranked_nodes)
     return node_rank
 
+def get_top_ranked_node_each_group(graph):
+    # Calculate the rank of all nodes once
+    node_ranks = {node: average_weight_of_adjacent_nodes(graph, node) for node in graph.nodes()}
+
+    # Get all unique labels in the graph
+    labels = set(data['label'] for node, data in graph.nodes(data=True))
+
+    top_ranked_nodes = {}
+    for label in labels:
+        # Get the nodes with the same label
+        label_nodes = [node for node in graph.nodes() if graph.nodes[node]['label'] == label]
+
+        # Get the node with the highest rank
+        top_ranked_node = max(label_nodes, key=node_ranks.get)
+        top_ranked_nodes[label] = top_ranked_node
+    print(top_ranked_nodes)
+    return list(top_ranked_nodes.values())
+
 
 def average_weight_of_adjacent_nodes(graph, node):
     """
@@ -262,6 +281,23 @@ def average_weight_of_adjacent_nodes(graph, node):
     else:
         return total_weight / count
 
+
+def remove_edges_based_on_project_network(expert_network, project_network):
+    """
+        We take out all edges that are not in the project network.
+    """
+    edges_to_remove = []
+
+    for edge in expert_network.edges():
+        node1_label = expert_network.nodes[edge[0]]['label']
+        node2_label = expert_network.nodes[edge[1]]['label']
+
+        if node1_label != node2_label and not project_network.has_edge(node1_label, node2_label):
+            edges_to_remove.append(edge)
+
+    expert_network.remove_edges_from(edges_to_remove)
+
+    return expert_network
 
 def sum_edge_weights(graph):
     total_weight = 0
@@ -313,7 +349,7 @@ def Greedy(graph_G, graph_P, seed_node):
         labels.append(graph_G.nodes[best_node]['label'])
         communication_efficiency += min_total_edge_weight
 
-    # print(f"Coordinators Communication Efficiency: {utils.sum_edge_weights(graph_G.subgraph(subset))}")
+    # print(f"Coordinators Communication Efficiency: {sum_edge_weights(graph_G.subgraph(subset))}")
     # print(f"Coordinators : {subset}")
 
     # return subset, sum_edge_weights(graph_G.subgraph(subset))
@@ -331,6 +367,7 @@ def RandomGreedy(graph_G, graph_P):
 
     # Start with a random node from G
     key = random.choice(list(graph_G.nodes))
+    print(f"Seed Node: {key}")
     subset = set()
     subset.add(key)
     labels = []
@@ -361,10 +398,8 @@ def RandomGreedy(graph_G, graph_P):
         subset.add(best_node)
         labels.append(graph_G.nodes[best_node]['label'])
         communication_efficiency += min_total_edge_weight
-
     print(
         f"Coordinators Communication Efficiency: {sum_edge_weights(graph_G.subgraph(subset))}")
-    print(f"Coordinators : {subset}")
 
     # return subset, round(sum_edge_weights(graph_G.subgraph(subset)), 4)
     return subset, round(communication_efficiency, 4)
@@ -380,11 +415,9 @@ def InfluenceGreedy(graph_G, graph_P):
         return None
 
     # Start with a random node from G
-    top_nodes = [
-        node for node in graph_G.nodes if graph_G.nodes[node]['influence'] == 100]
-    for node in top_nodes:
-        print(graph_G.nodes[node])
+    top_nodes = get_top_ranked_node_each_group(graph_G)
     key = random.choice(top_nodes)
+    print(f"Seed Node: {key}")  
     subset = set()
     subset.add(key)
     labels = []
@@ -418,7 +451,6 @@ def InfluenceGreedy(graph_G, graph_P):
 
     print(
         f"Coordinators Communication Efficiency: {sum_edge_weights(graph_G.subgraph(subset))}")
-    print(f"Coordinators : {subset}")
 
     # return graph_G.subgraph(subset)
     return subset, round(communication_efficiency, 4)

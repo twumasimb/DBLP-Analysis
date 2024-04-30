@@ -1,0 +1,83 @@
+#Star Project Structure
+
+Random Greedy
+Seed Node: Haofen Wang
+Coordinators Communication Efficiency: 33.33
+Total Communication Efficiency : 225.9043
+Team :AI, Node: Philippe Besnard, Rank: 1
+Team :DB, Node: Sotiria Tavoulari, Rank: 21
+Team :DM, Node: Haofen Wang, Rank: 41
+Team :T, Node: Kostas Tsichlas, Rank: 1
+
+Influence Greedy
+Seed Node: William Shapiro
+Coordinators Communication Efficiency: 0
+Total Communication Efficiency: 150.0
+Team :AI, Node: Philippe Besnard, Rank: 1
+Team :DB, Node: William Shapiro, Rank: 1
+Team :T, Node: Kostas Tsichlas, Rank: 1
+Team :DM, Node: Hamad Alhammady, Rank: 1
+
+Greedy
+Total Communication Efficiency: 423.2008
+Coordinators communication efficiency 130.0
+Team :T, Node: Majid Sarrafzadeh Rank: 60
+Team :DM, Node: Xue Li Rank: 30
+Team :DB, Node: William Shapiro Rank: 1
+Team :AI, Node: Yi Zhang 0010 Rank: 8
+
+#Fully-Connected Project Structure
+
+Random Greedy
+Seed Node: Joachim Hammer
+Coordinators Communication Efficiency: 22.220000000000002
+Total Communication Efficiency: 196.5813
+Team :AI, Node: Philippe Besnard, Rank: 1
+Team :DM, Node: Tim Furche, Rank: 29
+Team :T, Node: Kostas Tsichlas, Rank: 1
+Team :DB, Node: Joachim Hammer, Rank: 38
+
+Influence Greedy
+Seed Node: Kostas Tsichlas
+Coordinators Communication Efficiency: 0
+Total Communication Efficiency: 150.0
+Team :AI, Node: Philippe Besnard, Rank: 1
+Team :DB, Node: William Shapiro, Rank: 1
+Team :DM, Node: Hamad Alhammady, Rank: 1
+Team :T, Node: Kostas Tsichlas, Rank: 1
+
+Greedy
+Total Communication Efficiency: 423.2008
+Coordinators communication efficiency 130.0
+Team :T, Node: Majid Sarrafzadeh Rank: 60
+Team :DM, Node: Xue Li Rank: 30
+Team :DB, Node: William Shapiro Rank: 1
+Team :AI, Node: Yi Zhang 0010 Rank: 8
+
+#Chain Project Structure
+
+Random Greedy
+Seed Node: Rachel Pottinger
+Coordinators Communication Efficiency: 0
+Total Communication Efficiency: 150.0
+Team :DB, Node: Rachel Pottinger, Rank: 53
+Team :AI, Node: Philippe Besnard, Rank: 1
+Team :T, Node: Kostas Tsichlas, Rank: 1
+Team :DM, Node: Hamad Alhammady, Rank: 1
+
+Influence Greedy
+Seed Node: Hamad Alhammady
+Coordinators Communication Efficiency: 40.0
+Total Communication Efficiency: 260.0
+Team :AI, Node: Philippe Besnard, Rank: 1
+Team :DB, Node: Daniel Keren, Rank: 11
+Team :T, Node: Kostas Tsichlas, Rank: 1
+Team :DM, Node: Hamad Alhammady, Rank: 1
+
+Greedy
+Total Communication Efficiency: 423.2008
+Coordinators communication efficiency 130.0
+Team :T, Node: Majid Sarrafzadeh Rank: 60
+Team :DM, Node: Xue Li Rank: 30
+Team :DB, Node: William Shapiro Rank: 1
+Team :AI, Node: Yi Zhang 0010 Rank: 8
