@@ -1,3 +1,5 @@
+** Experiment One **
+
 #Star Project Structure
 
 Random Greedy
@@ -81,3 +83,88 @@ Team :T, Node: Majid Sarrafzadeh Rank: 60
 Team :DM, Node: Xue Li Rank: 30
 Team :DB, Node: William Shapiro Rank: 1
 Team :AI, Node: Yi Zhang 0010 Rank: 8
+
+** Experiment Two **
+# Star Project Structure
+
+Random Greedy
+Seed Node: Majid Sarrafzadeh
+Coordinators Communication Efficiency: 131.87591507785234
+Total Communication Efficiency : 321.2303
+Team :T, Node: Majid Sarrafzadeh, Rank: 51
+Team :DM, Node: Xue Li, Rank: 36
+Team :DB, Node: Xuan Zhou, Rank: 1
+Team :AI, Node: Yi Zhang 0010, Rank: 7
+
+Influence Greedy
+Seed Node: Rongjing Xiang
+Coordinators Communication Efficiency: 69.29937483424666
+Total Communication Efficiency: 193.6398
+Team :DM, Node: Rongjing Xiang, Rank: 1
+Team :DB, Node: Juliana Freire, Rank: 33
+Team :T, Node: Martin Rötteler, Rank: 4
+Team :AI, Node: Peter Edwards, Rank: 55
+
+Greedy
+Coordinators communication efficiency 131.87591507785234
+Total Communication Efficiency : 321.2303
+Team :T, Node: Majid Sarrafzadeh Rank: 51
+Team :DM, Node: Xue Li Rank: 36
+Team :DB, Node: Xuan Zhou Rank: 1
+Team :AI, Node: Yi Zhang 0010 Rank: 7
+
+# Fully-Connected Project Structure
+
+Random Greedy
+Seed Node: Joseph S. Ullian
+Coordinators Communication Efficiency: 68.21256057814959
+Total Communication Efficiency : 127.9162
+Team :T, Node: Joseph S. Ullian, Rank: 60
+Team :DB, Node: Juliana Freire, Rank: 33
+Team :AI, Node: Peter Edwards, Rank: 55
+Team :DM, Node: Rongjing Xiang, Rank: 1
+
+Influence Greedy
+Seed Node: Rongjing Xiang
+Coordinators Communication Efficiency: 69.29937483424666
+Total Communication Efficiency : 193.6398
+Team :DM, Node: Rongjing Xiang, Rank: 1
+Team :DB, Node: Juliana Freire, Rank: 33
+Team :T, Node: Martin Rötteler, Rank: 4
+Team :AI, Node: Peter Edwards, Rank: 55
+
+Greedy
+Total Communication Efficiency : 321.2303
+Coordinators communication efficiency 131.87591507785234
+Team :T, Node: Majid Sarrafzadeh Rank: 51
+Team :DM, Node: Xue Li Rank: 36
+Team :DB, Node: Xuan Zhou Rank: 1
+Team :AI, Node: Yi Zhang 0010 Rank: 7
+
+# Chain Project Structure
+
+Random Greedy
+Seed Node: Carla P. Gomes
+Coordinators Communication Efficiency: 11.820525435119878
+Total Communication Efficiency : 34.8233
+Team :DM, Node: Rongjing Xiang, Rank: 1
+Team :DB, Node: Juliana Freire, Rank: 33
+Team :T, Node: Martin Rötteler, Rank: 4
+Team :AI, Node: Carla P. Gomes, Rank: 47
+
+Influence Greedy
+Seed Node: Rongjing Xiang
+Coordinators Communication Efficiency: 69.29937483424666
+Total Communication Efficiency : 193.6398
+Team :DM, Node: Rongjing Xiang, Rank: 1
+Team :DB, Node: Juliana Freire, Rank: 33
+Team :T, Node: Martin Rötteler, Rank: 4
+Team :AI, Node: Peter Edwards, Rank: 55
+
+Greedy
+Total Communication Efficiency : 321.2303
+Coordinators communication efficiency 131.87591507785234
+Team :T, Node: Majid Sarrafzadeh Rank: 51
+Team :DM, Node: Xue Li Rank: 36
+Team :DB, Node: Xuan Zhou Rank: 1
+Team :AI, Node: Yi Zhang 0010 Rank: 7
