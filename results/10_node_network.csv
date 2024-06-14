@@ -1,0 +1,51 @@
+
+Star-Structured Project
+Node Ranking for Graph with 4 nodes and 3 edges Under Greedy Strategy
+Author,Label,Rank
+Charuta Nakhe,DB,1
+Dana S. Nau,AI,1
+Lu Wang,DM,3
+Paul Dütting,T,8
+Node Ranking for Graph with 4 nodes and 3 edges Under Influence Greedy Strategy
+Dana S. Nau,AI,1
+Florian Horn,T,1
+Charuta Nakhe,DB,1
+Sebastian Ryszard Kruk,DM,1
+Node Ranking for Graph with 4 nodes and 3 edges Under Influence Greedy Strategy
+Algorithm,Objective Function,Leaders Efficiency,Team efficiency
+Greedy,136.25,40.0,96.25
+Inf Greedy,114.0,0.0,114.0
+
+Fully-connected Structured Project
+Node Ranking for Graph with 4 nodes and 6 edges Under Greedy Strategy
+Author,Label,Rank
+Charuta Nakhe,DB,1
+Dana S. Nau,AI,1
+Lu Wang,DM,3
+Paul Dütting,T,8
+Node Ranking for Graph with 4 nodes and 6 edges Under Influence Greedy Strategy
+Dana S. Nau,AI,1
+Florian Horn,T,1
+Charuta Nakhe,DB,1
+Sebastian Ryszard Kruk,DM,1
+Node Ranking for Graph with 4 nodes and 6 edges Under Influence Greedy Strategy
+Algorithm,Objective Function,Leaders Efficiency,Team efficiency
+Greedy,136.25,40.0,96.25
+Inf Greedy,114.0,0.0,114.0
+
+Chain-Structured Project
+Node Ranking for Graph with 4 nodes and 3 edges Under Greedy Strategy
+Author,Label,Rank
+Charuta Nakhe,DB,1
+Dana S. Nau,AI,1
+Lu Wang,DM,3
+Paul Dütting,T,8
+Node Ranking for Graph with 4 nodes and 3 edges Under Influence Greedy Strategy
+Dana S. Nau,AI,1
+Florian Horn,T,1
+Charuta Nakhe,DB,1
+Sebastian Ryszard Kruk,DM,1
+Node Ranking for Graph with 4 nodes and 3 edges Under Influence Greedy Strategy
+Algorithm,Objective Function,Leaders Efficiency,Team efficiency
+Greedy,136.25,40.0,96.25
+Inf Greedy,114.0,0.0,114.0
