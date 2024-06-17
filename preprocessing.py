@@ -263,6 +263,30 @@ def get_top_ranked_node_each_group(graph):
     return list(top_ranked_nodes.values())
 
 
+def get_connected_subgraph(G, size):
+    # Check if the requested size is greater than the graph
+    if size > G.number_of_nodes():
+        raise ValueError("Requested subgraph size is larger than the graph.")
+    
+    # Start with a random node
+    start_node = random.choice(list(G.nodes))
+    visited = set([start_node])
+    queue = [start_node]
+
+    # Perform a BFS/DFS until the subgraph has the desired number of nodes
+    while len(visited) < size and queue:
+        node = queue.pop(0)  # For BFS; use pop() for DFS
+        neighbors = list(G.neighbors(node))
+        random.shuffle(neighbors)  # Shuffle neighbors to get a random selection
+        for neighbor in neighbors:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
+            if len(visited) == size:
+                break
+
+    return visited
+
 def create_subnet(network, nodes_per_team):
     """
     Creates a smaller graph by selecting a fixed number of nodes from each label in the given dataset.
@@ -283,11 +307,12 @@ def create_subnet(network, nodes_per_team):
         # Get all the nodes with the current label
         nodes_with_label = [node for node in network.nodes if network.nodes[node]['label'] == label]
 
-        # Randomly select 60 nodes from the current label
-        selected_nodes = random.sample(nodes_with_label, nodes_per_team)
+        net_T = network.subgraph(nodes_with_label)
+
+        nodes_in_component = get_connected_subgraph(net_T, nodes_per_team)
 
         # Add the selected nodes to the list of selected samples
-        selected_samples.extend(selected_nodes)
+        selected_samples.extend(nodes_in_component)
 
     # Create a new graph with the selected samples
     subnet = network.subgraph(selected_samples)
@@ -390,7 +415,7 @@ def randomMonteCarlo(graph, num_iter):
         total_weight += sum_edge_weights(graph.subgraph(randomAlgo(graph)))
 
     avg_weight = round(total_weight / num_iter, 2)
-    print(f"Using Random : {avg_weight}")
+    # print(f"Using Random : {avg_weight}")
     return avg_weight
 
 
