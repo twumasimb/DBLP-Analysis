@@ -2,68 +2,68 @@ Star-Structured Project
 
 Node Ranking for Star-Structured Project Under Greedy Strategy
 Author,Label,Rank
-Walter Binder,DM,5
-Maurício R. Mediano,DB,15
-Paul Dütting,T,4
-Kevin Regan,AI,1
+Andre Scedrov,T,2
+Alessandro Bozzon,DM,10
+Arash Termehchy,DB,26
+Nuria Oliver,AI,18
 
 
 Node Ranking for Star-Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Christian Kohlschütter,DM,1
-Oktie Hassanzadeh,DB,1
-Waleed Meleis,T,2
-Kevin Regan,AI,1
+Ling Li,AI,1
+Andre Scedrov,T,2
+Yan Huang,DM,3
+Hirotaka Sakai,DB,1
 
 
 Node Ranking for Star-Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,464.09,150.0,314.09
-Inf Greedy,295.0,50.0,245.0
+Greedy,435.988,150.0,285.988
+Inf Greedy,156.66,0.0,156.66
 
 Fully-connected Structured Project
 
 Node Ranking for Fully-connected Structured Project Under Greedy Strategy
 Author,Label,Rank
-Walter Binder,DM,5
-Maurício R. Mediano,DB,15
-Paul Dütting,T,4
-Kevin Regan,AI,1
+Andre Scedrov,T,2
+Alessandro Bozzon,DM,10
+Arash Termehchy,DB,26
+Nuria Oliver,AI,18
 
 
 Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Christian Kohlschütter,DM,1
-Oktie Hassanzadeh,DB,1
-Waleed Meleis,T,2
-Kevin Regan,AI,1
+Ling Li,AI,1
+Andre Scedrov,T,2
+Yan Huang,DM,3
+Hirotaka Sakai,DB,1
 
 
 Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,464.09,150.0,314.09
-Inf Greedy,295.0,50.0,245.0
+Greedy,435.988,150.0,285.988
+Inf Greedy,156.66,0.0,156.66
 
 Chain-Structured Project
 
 Node Ranking for Chain-Structured Project Under Greedy Strategy
 Author,Label,Rank
-Walter Binder,DM,5
-Maurício R. Mediano,DB,15
-Paul Dütting,T,4
-Kevin Regan,AI,1
+Andre Scedrov,T,2
+Alessandro Bozzon,DM,10
+Arash Termehchy,DB,26
+Nuria Oliver,AI,18
 
 
 Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Christian Kohlschütter,DM,1
-Oktie Hassanzadeh,DB,1
-Waleed Meleis,T,2
-Kevin Regan,AI,1
+Ling Li,AI,1
+Andre Scedrov,T,2
+Yan Huang,DM,3
+Hirotaka Sakai,DB,1
 
 
 Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,464.09,150.0,314.09
-Inf Greedy,295.0,50.0,245.0
+Greedy,435.988,150.0,285.988
+Inf Greedy,156.66,0.0,156.66
 

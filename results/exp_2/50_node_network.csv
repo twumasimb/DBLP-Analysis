@@ -2,68 +2,68 @@ Star-Structured Project
 
 Node Ranking for Star-Structured Project Under Greedy Strategy
 Author,Label,Rank
-Boduo Li,DB,2
-Naty Leiser,DM,22
-Martín Abadi,T,33
-Róbert Busa-Fekete,AI,1
+Justin J. Levandoski,DB,2
+Ismail Ari,DM,30
+Yongyi Mao,AI,30
+Subhash Suri,T,29
 
 
 Node Ranking for Star-Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Bao-Liang Lu,AI,9
-Jorge-Arnulfo Quiané-Ruiz,DB,1
-Martín Abadi,T,33
-Josh Bongard,DM,1
+Alexessander Alves,AI,5
+Emmanuel J. Candès,T,1
+Christos Tryfonopoulos,DB,28
+Dongmei Ren,DM,1
 
 
 Node Ranking for Star-Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,212.9966,76.76,136.2366
-Inf Greedy,157.4248,66.76,90.6648
+Greedy,342.5431,148.912,193.6311
+Inf Greedy,196.9102,74.914,121.9962
 
 Fully-connected Structured Project
 
 Node Ranking for Fully-connected Structured Project Under Greedy Strategy
 Author,Label,Rank
-Boduo Li,DB,2
-Naty Leiser,DM,22
-Martín Abadi,T,33
-Róbert Busa-Fekete,AI,1
+Justin J. Levandoski,DB,2
+Ismail Ari,DM,30
+Yongyi Mao,AI,30
+Subhash Suri,T,29
 
 
 Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Bao-Liang Lu,AI,9
-Jorge-Arnulfo Quiané-Ruiz,DB,1
-Martín Abadi,T,33
-Josh Bongard,DM,1
+Alexessander Alves,AI,5
+Emmanuel J. Candès,T,1
+Christos Tryfonopoulos,DB,28
+Dongmei Ren,DM,1
 
 
 Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,212.9966,76.76,136.2366
-Inf Greedy,157.4248,66.76,90.6648
+Greedy,342.5431,148.912,193.6311
+Inf Greedy,196.9102,74.914,121.9962
 
 Chain-Structured Project
 
 Node Ranking for Chain-Structured Project Under Greedy Strategy
 Author,Label,Rank
-Boduo Li,DB,2
-Naty Leiser,DM,22
-Martín Abadi,T,33
-Róbert Busa-Fekete,AI,1
+Justin J. Levandoski,DB,2
+Ismail Ari,DM,30
+Yongyi Mao,AI,30
+Subhash Suri,T,29
 
 
 Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Bao-Liang Lu,AI,9
-Jorge-Arnulfo Quiané-Ruiz,DB,1
-Martín Abadi,T,33
-Josh Bongard,DM,1
+Alexessander Alves,AI,5
+Emmanuel J. Candès,T,1
+Christos Tryfonopoulos,DB,28
+Dongmei Ren,DM,1
 
 
 Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,212.9966,76.76,136.2366
-Inf Greedy,157.4248,66.76,90.6648
+Greedy,342.5431,148.912,193.6311
+Inf Greedy,196.9102,74.914,121.9962
 

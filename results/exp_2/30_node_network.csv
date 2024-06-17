@@ -2,68 +2,68 @@ Star-Structured Project
 
 Node Ranking for Star-Structured Project Under Greedy Strategy
 Author,Label,Rank
-Kevyn Collins-Thompson,AI,11
-William I. Chang,T,24
-Ulf Leser,DB,9
-John J. Barton,DM,5
+Nuria Oliver,AI,19
+Arash Termehchy,DB,26
+Liangliang Cao,DM,1
+Andre Scedrov,T,2
 
 
 Node Ranking for Star-Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-William I. Chang,T,24
-Hang Li,AI,13
-Ulf Leser,DB,9
-Byron J. Gao,DM,1
+Arash Termehchy,DB,26
+Nuria Oliver,AI,19
+Liangliang Cao,DM,1
+Andre Scedrov,T,2
 
 
 Node Ranking for Star-Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,302.0575,136.958,165.0995
-Inf Greedy,139.1393,71.808,67.33129999999998
+Greedy,363.5159,152.639,210.8769
+Inf Greedy,357.4076,152.639,204.7686
 
 Fully-connected Structured Project
 
 Node Ranking for Fully-connected Structured Project Under Greedy Strategy
 Author,Label,Rank
-Kevyn Collins-Thompson,AI,11
-William I. Chang,T,24
-Ulf Leser,DB,9
-John J. Barton,DM,5
+Nuria Oliver,AI,19
+Arash Termehchy,DB,26
+Liangliang Cao,DM,1
+Andre Scedrov,T,2
 
 
 Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-William I. Chang,T,24
-Hang Li,AI,13
-Ulf Leser,DB,9
-Byron J. Gao,DM,1
+Arash Termehchy,DB,26
+Nuria Oliver,AI,19
+Liangliang Cao,DM,1
+Andre Scedrov,T,2
 
 
 Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,302.0575,136.958,165.0995
-Inf Greedy,139.1393,71.808,67.33129999999998
+Greedy,363.5159,152.639,210.8769
+Inf Greedy,357.4076,152.639,204.7686
 
 Chain-Structured Project
 
 Node Ranking for Chain-Structured Project Under Greedy Strategy
 Author,Label,Rank
-Kevyn Collins-Thompson,AI,11
-William I. Chang,T,24
-Ulf Leser,DB,9
-John J. Barton,DM,5
+Nuria Oliver,AI,19
+Arash Termehchy,DB,26
+Liangliang Cao,DM,1
+Andre Scedrov,T,2
 
 
 Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-William I. Chang,T,24
-Hang Li,AI,13
-Ulf Leser,DB,9
-Byron J. Gao,DM,1
+Arash Termehchy,DB,26
+Nuria Oliver,AI,19
+Liangliang Cao,DM,1
+Andre Scedrov,T,2
 
 
 Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,302.0575,136.958,165.0995
-Inf Greedy,139.1393,71.808,67.33129999999998
+Greedy,363.5159,152.639,210.8769
+Inf Greedy,357.4076,152.639,204.7686
 

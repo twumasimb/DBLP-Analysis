@@ -2,68 +2,68 @@ Star-Structured Project
 
 Node Ranking for Star-Structured Project Under Greedy Strategy
 Author,Label,Rank
-James Cheney,DB,1
-Krzysztof Lorys,T,4
-Gang Li,DM,10
-Shyam Kapur,AI,11
+Todd J. Green,DB,2
+Dorian Suc,AI,1
+Chunsong Wang,DM,1
+William I. Chang,T,18
 
 
 Node Ranking for Star-Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Domenico Saccà,DB,19
-Axel Polleres,DM,1
-Tomás Singliar,AI,1
-Wojciech Szpankowski,T,5
+Shachar Lovett,T,1
+Chunsong Wang,DM,1
+Dorian Suc,AI,1
+David S. Reiner,DB,1
 
 
 Node Ranking for Star-Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,110.0395,40.14,69.8995
-Inf Greedy,59.7245,21.25,38.4745
+Greedy,77.7188,21.29,56.4288
+Inf Greedy,20.8476,1.505,19.3426
 
 Fully-connected Structured Project
 
 Node Ranking for Fully-connected Structured Project Under Greedy Strategy
 Author,Label,Rank
-James Cheney,DB,1
-Krzysztof Lorys,T,4
-Gang Li,DM,10
-Shyam Kapur,AI,11
+Todd J. Green,DB,2
+Dorian Suc,AI,1
+Chunsong Wang,DM,1
+William I. Chang,T,18
 
 
 Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Domenico Saccà,DB,19
-Axel Polleres,DM,1
-Tomás Singliar,AI,1
-Wojciech Szpankowski,T,5
+Shachar Lovett,T,1
+Chunsong Wang,DM,1
+Dorian Suc,AI,1
+David S. Reiner,DB,1
 
 
 Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,110.0395,40.14,69.8995
-Inf Greedy,59.7245,21.25,38.4745
+Greedy,77.7188,21.29,56.4288
+Inf Greedy,20.8476,1.505,19.3426
 
 Chain-Structured Project
 
 Node Ranking for Chain-Structured Project Under Greedy Strategy
 Author,Label,Rank
-Tomás Singliar,AI,1
-Lorna Stewart,T,3
-Gang Li,DM,10
-James Cheney,DB,1
+Todd J. Green,DB,2
+Dorian Suc,AI,1
+Chunsong Wang,DM,1
+William I. Chang,T,18
 
 
 Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Axel Polleres,DM,1
-Heiko Röglin,T,1
-Tomás Singliar,AI,1
-James Cheney,DB,1
+Shachar Lovett,T,1
+Chunsong Wang,DM,1
+Dorian Suc,AI,1
+David S. Reiner,DB,1
 
 
 Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,80.2165,23.47,56.7465
-Inf Greedy,14.8725,1.5,13.3725
+Greedy,77.5038,21.075,56.4288
+Inf Greedy,20.6326,1.29,19.3426
 

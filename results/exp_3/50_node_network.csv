@@ -2,68 +2,68 @@ Star-Structured Project
 
 Node Ranking for Star-Structured Project Under Greedy Strategy
 Author,Label,Rank
-Zoë Abrams,DB,47
-Daniel Golovin,T,19
-Charles B. Ward,DM,1
-Ricardo Bezerra de Andrade e Silva,AI,1
+Warren Shen,DB,1
+Dmitriy Morozov,T,3
+David Barber,AI,1
+Christos Boutsidis,DM,40
 
 
 Node Ranking for Star-Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Yi Lin,DB,1
-Persi Diaconis,T,1
-Charles B. Ward,DM,1
-Ricardo Bezerra de Andrade e Silva,AI,1
+Emmanuel J. Candès,T,1
+David Barber,AI,1
+Dongmei Ren,DM,1
+Warren Shen,DB,1
 
 
 Node Ranking for Star-Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,139.9503,41.35,98.6003
-Inf Greedy,22.965,1.575,21.39
+Greedy,162.7254,51.188,111.5374
+Inf Greedy,16.4414,1.386,15.055400000000002
 
 Fully-connected Structured Project
 
 Node Ranking for Fully-connected Structured Project Under Greedy Strategy
 Author,Label,Rank
-Zoë Abrams,DB,47
-Daniel Golovin,T,19
-Charles B. Ward,DM,1
-Ricardo Bezerra de Andrade e Silva,AI,1
+Warren Shen,DB,1
+Dmitriy Morozov,T,3
+David Barber,AI,1
+Christos Boutsidis,DM,40
 
 
 Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Yi Lin,DB,1
-Persi Diaconis,T,1
-Charles B. Ward,DM,1
-Ricardo Bezerra de Andrade e Silva,AI,1
+Emmanuel J. Candès,T,1
+David Barber,AI,1
+Dongmei Ren,DM,1
+Warren Shen,DB,1
 
 
 Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,139.9503,41.35,98.6003
-Inf Greedy,22.965,1.575,21.39
+Greedy,162.7254,51.188,111.5374
+Inf Greedy,16.4414,1.386,15.055400000000002
 
 Chain-Structured Project
 
 Node Ranking for Chain-Structured Project Under Greedy Strategy
 Author,Label,Rank
-Zoë Abrams,DB,47
-Daniel Golovin,T,19
-Charles B. Ward,DM,1
-Ricardo Bezerra de Andrade e Silva,AI,1
+Warren Shen,DB,1
+Dmitriy Morozov,T,3
+David Barber,AI,1
+Christos Boutsidis,DM,40
 
 
 Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Yi Lin,DB,1
-Persi Diaconis,T,1
-Charles B. Ward,DM,1
-Ricardo Bezerra de Andrade e Silva,AI,1
+Emmanuel J. Candès,T,1
+David Barber,AI,1
+Dongmei Ren,DM,1
+Warren Shen,DB,1
 
 
 Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,139.7253,41.125,98.6003
-Inf Greedy,22.74,1.35,21.389999999999997
+Greedy,162.3294,50.99,111.3394
+Inf Greedy,16.0454,1.188,14.8574
 

@@ -350,6 +350,50 @@ def sum_edge_weights(graph) -> float:
     return round(total_weight, 4)
 
 
+def randomAlgo(network):
+    """
+    Randomly selects a node from each unique venue in the given network.
+
+    Parameters:
+    - network (networkx.Graph): The network graph containing nodes with venues attribute.
+
+    Returns:
+    - list: A list of selected nodes, one for each unique venue in the network.
+    """
+
+    # Assuming G is your graph
+    venues = nx.get_node_attributes(network, 'label').values()
+
+    # Flatten the list of venues
+    flattened_venues = [venue for sublist in venues for venue in sublist]
+
+    # Get unique venues
+    unique_venues = set(flattened_venues)
+
+    selected_nodes = {}
+    for venue in unique_venues:
+        # get nodes with this venue
+        nodes = [n for n, v in nx.get_node_attributes(network, 'label').items() if venue in v]
+        
+        # randomly select a node
+        selected_node = random.choice(nodes)
+        
+        selected_nodes[venue] = selected_node
+
+    return list(selected_nodes.values())
+
+
+def randomMonteCarlo(graph, num_iter):
+    total_weight = 0
+
+    for _ in range(num_iter):
+        total_weight += sum_edge_weights(graph.subgraph(randomAlgo(graph)))
+
+    avg_weight = round(total_weight / num_iter, 2)
+    print(f"Using Random : {avg_weight}")
+    return avg_weight
+
+
 def Greedy(graph_G, graph_P, seed_node, beta=None):
     if graph_G is None or graph_P is None:
         RuntimeError("One or Both of the graphs is None! ")
@@ -498,3 +542,28 @@ def InfluenceGreedy(graph_G, graph_P):
 
     # return graph_G.subgraph(subset)
     return subset, round(communication_efficiency, 4)
+
+
+def add_weights(network):
+    """
+    Adds edges to the network with a weight value based on the minimum weight in the network.
+
+    Parameters:
+    - network: The network to add edges to.
+
+    Returns:
+    - network
+    """
+
+    # Find the minimum weight in the network
+    min_weight = min(nx.get_edge_attributes(network, 'weight').values())
+
+    # Iterate over all pairs of nodes
+    for node1 in network.nodes():
+        for node2 in network.nodes():
+            # Check if there is no edge between the nodes
+            if not network.has_edge(node1, node2):
+                # Add the edge with the weight value
+                network.add_edge(node1, node2, weight=0.1 * min_weight)
+
+    return network

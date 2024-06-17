@@ -2,68 +2,68 @@ Star-Structured Project
 
 Node Ranking for Star-Structured Project Under Greedy Strategy
 Author,Label,Rank
-Vamsidhar Thummala,DB,1
-Rongjing Xiang,DM,1
-Filip Zelezný,AI,1
-C. Seshadhri,T,1
+Malik Magdon-Ismail,AI,12
+Ohad Greenshpan,DB,1
+Liangliang Cao,DM,1
+Stefan Langerman,T,7
 
 
 Node Ranking for Star-Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Vamsidhar Thummala,DB,1
-Rongjing Xiang,DM,1
-Filip Zelezný,AI,1
-C. Seshadhri,T,1
+Jan Johannsen,T,1
+Ohad Greenshpan,DB,1
+Hsuan-Tien Lin,AI,1
+Liangliang Cao,DM,1
 
 
 Node Ranking for Star-Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,106.2411,29.77,76.4711
-Inf Greedy,106.2411,29.77,76.4711
+Greedy,70.9197,20.442,50.4777
+Inf Greedy,21.9526,2.639,19.3136
 
 Fully-connected Structured Project
 
 Node Ranking for Fully-connected Structured Project Under Greedy Strategy
 Author,Label,Rank
-Vamsidhar Thummala,DB,1
-Rongjing Xiang,DM,1
-Filip Zelezný,AI,1
-C. Seshadhri,T,1
+Malik Magdon-Ismail,AI,12
+Ohad Greenshpan,DB,1
+Liangliang Cao,DM,1
+Stefan Langerman,T,7
 
 
 Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Vamsidhar Thummala,DB,1
-Rongjing Xiang,DM,1
-Filip Zelezný,AI,1
-C. Seshadhri,T,1
+Jan Johannsen,T,1
+Ohad Greenshpan,DB,1
+Hsuan-Tien Lin,AI,1
+Liangliang Cao,DM,1
 
 
 Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,106.2411,29.77,76.4711
-Inf Greedy,106.2411,29.77,76.4711
+Greedy,70.9197,20.442,50.4777
+Inf Greedy,21.9526,2.639,19.3136
 
 Chain-Structured Project
 
 Node Ranking for Chain-Structured Project Under Greedy Strategy
 Author,Label,Rank
-Rongjing Xiang,DM,1
-Ismailcem Budak Arpinar,DB,8
-Filip Zelezný,AI,1
-Maxim Sviridenko,T,9
+Philipp Woelfel,T,9
+Ohad Greenshpan,DB,1
+Hsuan-Tien Lin,AI,1
+Arpita Ghosh,DM,10
 
 
 Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Vamsidhar Thummala,DB,1
-Rongjing Xiang,DM,1
-Filip Zelezný,AI,1
-C. Seshadhri,T,1
+Jan Johannsen,T,1
+Ohad Greenshpan,DB,1
+Hsuan-Tien Lin,AI,1
+Liangliang Cao,DM,1
 
 
 Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,36.6407,7.67,28.9707
-Inf Greedy,20.7311,1.2,19.531100000000002
+Greedy,54.4915,14.385,40.1065
+Inf Greedy,21.1986,2.262,18.9366
 

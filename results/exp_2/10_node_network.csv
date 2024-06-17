@@ -2,68 +2,68 @@ Star-Structured Project
 
 Node Ranking for Star-Structured Project Under Greedy Strategy
 Author,Label,Rank
-Chengfei Liu,DB,1
-Luca de Alfaro,T,3
-Weizheng Gao,DM,8
-Kazumi Saito,AI,9
+Or Meir,T,1
+David Aumueller,DB,6
+Shojiro Nishio,DM,8
+Yuhong Guo,AI,8
 
 
 Node Ranking for Star-Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Chengfei Liu,DB,1
-Ravindran Kannan,T,1
-Hector Geffner,AI,1
-Jiahui Liu,DM,2
+Greg Hamerly,AI,1
+Or Meir,T,1
+Xintao Wu,DM,9
+Daniel Gyllstrom,DB,2
 
 
 Node Ranking for Star-Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,162.8338,65.708,97.1258
-Inf Greedy,96.579,28.996,67.583
+Greedy,80.824,27.07,53.754
+Inf Greedy,50.209,16.36,33.849000000000004
 
 Fully-connected Structured Project
 
 Node Ranking for Fully-connected Structured Project Under Greedy Strategy
 Author,Label,Rank
-Chengfei Liu,DB,1
-Luca de Alfaro,T,3
-Weizheng Gao,DM,8
-Kazumi Saito,AI,9
+Or Meir,T,1
+David Aumueller,DB,6
+Shojiro Nishio,DM,8
+Yuhong Guo,AI,8
 
 
 Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Chengfei Liu,DB,1
-Ravindran Kannan,T,1
-Hector Geffner,AI,1
-Jiahui Liu,DM,2
+Greg Hamerly,AI,1
+Or Meir,T,1
+Xintao Wu,DM,9
+Daniel Gyllstrom,DB,2
 
 
 Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,162.8338,65.708,97.1258
-Inf Greedy,96.579,28.996,67.583
+Greedy,80.824,27.07,53.754
+Inf Greedy,50.209,16.36,33.849000000000004
 
 Chain-Structured Project
 
 Node Ranking for Chain-Structured Project Under Greedy Strategy
 Author,Label,Rank
-Chengfei Liu,DB,1
-Luca de Alfaro,T,3
-Weizheng Gao,DM,8
-Kazumi Saito,AI,9
+Or Meir,T,1
+David Aumueller,DB,6
+Shojiro Nishio,DM,8
+Yuhong Guo,AI,8
 
 
 Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Chengfei Liu,DB,1
-Ravindran Kannan,T,1
-Hector Geffner,AI,1
-Jiahui Liu,DM,2
+Greg Hamerly,AI,1
+Or Meir,T,1
+Xintao Wu,DM,9
+Daniel Gyllstrom,DB,2
 
 
 Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,162.8338,65.708,97.1258
-Inf Greedy,96.579,28.996,67.583
+Greedy,80.824,27.07,53.754
+Inf Greedy,50.209,16.36,33.849000000000004
 

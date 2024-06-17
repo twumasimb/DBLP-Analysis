@@ -1,69 +1,68 @@
-Star-Structured Project
-
-Node Ranking for Star-Structured Project Under Greedy Strategy
-Author,Label,Rank
-Lu Wang,DM,4
-Paul Dütting,T,10
-Theodore Johnson,DB,1
-Dana S. Nau,AI,1
-
-
-Node Ranking for Star-Structured Project Under Influence Greedy Strategy
-Author,Label,Rank
-Ulrike Sattler,DM,1
-Theodore Johnson,DB,1
-Florian Horn,T,1
-Dana S. Nau,AI,1
-
-
-Node Ranking for Star-Structured Project Under Influence Greedy Strategy
+Star-Structured Project,,,
+,,,
+Node Ranking for Star-Structured Project Under Greedy Strategy,,,
+Author,Label,Rank,
+Lars Arge,T,2,
+Matthias Schonlau,DM,2,
+Michael V. Vyugin,AI,9,
+Rasa Bliujute,DB,9,
+,,,
+,,,
+Node Ranking for Star-Structured Project Under Influence Greedy Strategy,,,
+Author,Label,Rank,
+Or Meir,T,1,
+Greg Hamerly,AI,1,
+Torben Bach Pedersen,DB,1,
+Matthias Schonlau,DM,2,
+,,,
+,,,
+Node Ranking for Star-Structured Project Under Influence Greedy Strategy,,,
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,132.061,42.4,89.661
-Inf Greedy,20.84,2.8,18.04
-
-Fully-connected Structured Project
-
-Node Ranking for Fully-connected Structured Project Under Greedy Strategy
-Author,Label,Rank
-Lu Wang,DM,4
-Paul Dütting,T,10
-Theodore Johnson,DB,1
-Dana S. Nau,AI,1
-
-
-Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
-Author,Label,Rank
-Ulrike Sattler,DM,1
-Theodore Johnson,DB,1
-Florian Horn,T,1
-Dana S. Nau,AI,1
-
-
-Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
+Greedy,36.96,11.38,25.58
+Inf Greedy,9.078,1.61,7.468
+,,,
+Fully-connected Structured Project,,,
+,,,
+Node Ranking for Fully-connected Structured Project Under Greedy Strategy,,,
+Author,Label,Rank,
+Lars Arge,T,2,
+Matthias Schonlau,DM,2,
+Michael V. Vyugin,AI,9,
+Rasa Bliujute,DB,9,
+,,,
+,,,
+Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy,,,
+Author,Label,Rank,
+Or Meir,T,1,
+Greg Hamerly,AI,1,
+Torben Bach Pedersen,DB,1,
+Matthias Schonlau,DM,2,
+,,,
+,,,
+Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy,,,
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,132.061,42.4,89.661
-Inf Greedy,20.84,2.8,18.04
-
-Chain-Structured Project
-
-Node Ranking for Chain-Structured Project Under Greedy Strategy
-Author,Label,Rank
-Lu Wang,DM,4
-Paul Dütting,T,10
-Theodore Johnson,DB,1
-Dana S. Nau,AI,1
-
-
-Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
-Author,Label,Rank
-Ulrike Sattler,DM,1
-Theodore Johnson,DB,1
-Florian Horn,T,1
-Dana S. Nau,AI,1
-
-
-Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
+Greedy,36.96,11.38,25.58
+Inf Greedy,9.078,1.61,7.468
+,,,
+Chain-Structured Project,,,
+,,,
+Node Ranking for Chain-Structured Project Under Greedy Strategy,,,
+Author,Label,Rank,
+Lars Arge,T,2,
+Matthias Schonlau,DM,2,
+Michael V. Vyugin,AI,9,
+Rasa Bliujute,DB,9,
+,,,
+,,,
+Node Ranking for Chain-Structured Project Under Influence Greedy Strategy,,,
+Author,Label,Rank,
+Or Meir,T,1,
+Greg Hamerly,AI,1,
+Torben Bach Pedersen,DB,1,
+Matthias Schonlau,DM,2,
+,,,
+,,,
+Node Ranking for Chain-Structured Project Under Influence Greedy Strategy,,,
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,131.261,42.0,89.261
-Inf Greedy,20.04,2.4,17.64
-
+Greedy,36.73,11.15,25.58
+Inf Greedy,8.618,1.38,7.238
