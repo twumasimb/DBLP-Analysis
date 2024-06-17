@@ -4,6 +4,15 @@ import networkx as nx
 random.seed(42)
 
 
+#### Move these to a utils file later ####
+import inspect, re
+
+def varname(p):
+  for line in inspect.getframeinfo(inspect.currentframe().f_back)[3]:
+    m = re.search(r'\bvarname\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*\)', line)
+    if m:
+      return m.group(1)
+
 def createProjectNetwork(list):
     project = nx.Graph()
     project.add_edges_from(list)
@@ -250,11 +259,43 @@ def get_top_ranked_node_each_group(graph):
         # Get the node with the highest rank
         top_ranked_node = max(label_nodes, key=node_ranks.get)
         top_ranked_nodes[label] = top_ranked_node
-    print(top_ranked_nodes)
+    # print(top_ranked_nodes)
     return list(top_ranked_nodes.values())
 
 
-def average_weight_of_adjacent_nodes(graph, node):
+def create_subnet(network, nodes_per_team):
+    """
+    Creates a smaller graph by selecting a fixed number of nodes from each label in the given dataset.
+
+    Parameters:
+    dataset (networkx.Graph): The original dataset graph.
+
+    Returns:
+    networkx.Graph: The new graph containing the selected samples.
+    """
+
+    # Create a list to store the selected samples
+    selected_samples = []
+    labels = ['T', 'DM', 'DB', 'AI']
+
+    # Iterate over each label
+    for label in labels:
+        # Get all the nodes with the current label
+        nodes_with_label = [node for node in network.nodes if network.nodes[node]['label'] == label]
+
+        # Randomly select 60 nodes from the current label
+        selected_nodes = random.sample(nodes_with_label, nodes_per_team)
+
+        # Add the selected nodes to the list of selected samples
+        selected_samples.extend(selected_nodes)
+
+    # Create a new graph with the selected samples
+    subnet = network.subgraph(selected_samples)
+
+    return subnet
+
+
+def average_weight_of_adjacent_nodes(graph, node) -> float:
     """
     Calculate the average weight of adjacent nodes with the same label as the given node in a graph.
 
@@ -279,7 +320,7 @@ def average_weight_of_adjacent_nodes(graph, node):
     if count == 0:
         return 0
     else:
-        return total_weight / count
+        return round(total_weight / count, 4)
 
 
 def remove_edges_based_on_project_network(expert_network, project_network):
@@ -299,20 +340,19 @@ def remove_edges_based_on_project_network(expert_network, project_network):
 
     return expert_network
 
-def sum_edge_weights(graph):
-    total_weight = 0
+def sum_edge_weights(graph) -> float:
+    total_weight = 0.0
 
     for _, _, data in graph.edges(data=True):
         if 'weight' in data:
             total_weight += data['weight']
 
-    return total_weight
+    return round(total_weight, 4)
 
 
-def Greedy(graph_G, graph_P, seed_node):
+def Greedy(graph_G, graph_P, seed_node, beta=None):
     if graph_G is None or graph_P is None:
-        print("Error: One or both of the graphs is None.")
-        return None
+        RuntimeError("One or Both of the graphs is None! ")
 
     if len(graph_P.nodes) > len(graph_G.nodes):
         print("Error: Number of nodes in P is greater than the number of nodes in G.")
@@ -326,7 +366,7 @@ def Greedy(graph_G, graph_P, seed_node):
 
     while len(subset) < len(graph_P.nodes):
         best_node = None
-        min_total_edge_weight = 0.0
+        min_total_edge_weight = float('-inf')
 
         # Iterate over nodes in G not in the subset
         for node in set(graph_G.nodes) - subset:
@@ -336,8 +376,12 @@ def Greedy(graph_G, graph_P, seed_node):
                 temp_subset.add(node)
 
                 # Calculate the total edge weight in the subgraph
-                total_edge_weight = sum_edge_weights(
-                    graph_G.subgraph(temp_subset)) + (average_weight_of_adjacent_nodes(graph_G, node))
+                if beta is None:
+                    total_edge_weight = sum_edge_weights(
+                        graph_G.subgraph(temp_subset)) + (average_weight_of_adjacent_nodes(graph_G, node))
+                else:
+                    total_edge_weight = beta*sum_edge_weights(
+                        graph_G.subgraph(temp_subset)) + (1-beta)*(average_weight_of_adjacent_nodes(graph_G, node))
 
                 # Update the best node if the current node maximizes the total edge weight
                 if total_edge_weight > min_total_edge_weight:

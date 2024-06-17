@@ -2,68 +2,68 @@ Star-Structured Project
 
 Node Ranking for Star-Structured Project Under Greedy Strategy
 Author,Label,Rank
-Stasys Jukna,T,1
-Ismail Ari,DM,24
-Justin J. Levandoski,DB,26
-Yongyi Mao,AI,28
+Simon Perkins,AI,10
+Saori Kawasaki,DM,30
+Carmine Ventre,T,1
+Rafael Alonso,DB,20
 
 
 Node Ranking for Star-Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Stasys Jukna,T,1
-Wen Niu,DM,1
-Ricardo Rocha,AI,9
-Viswanathan Krishnamurthy,DB,1
+Mario A. Nascimento,DB,1
+Chandan K. Reddy,DM,3
+Alexandre Klementiev,AI,1
+Carmine Ventre,T,1
 
 
 Node Ranking for Star-Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,408.375,130.47,277.905
-Inf Greedy,267.14,50.0,217.14
+Greedy,261.539,101.505,160.034
+Inf Greedy,102.0875,30.505,71.58250000000001
 
 Fully-connected Structured Project
 
 Node Ranking for Fully-connected Structured Project Under Greedy Strategy
 Author,Label,Rank
-Stasys Jukna,T,1
-Ismail Ari,DM,24
-Justin J. Levandoski,DB,26
-Yongyi Mao,AI,28
+Simon Perkins,AI,10
+Saori Kawasaki,DM,30
+Carmine Ventre,T,1
+Rafael Alonso,DB,20
 
 
 Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Stasys Jukna,T,1
-Wen Niu,DM,1
-Ricardo Rocha,AI,9
-Viswanathan Krishnamurthy,DB,1
+Mario A. Nascimento,DB,1
+Chandan K. Reddy,DM,3
+Alexandre Klementiev,AI,1
+Carmine Ventre,T,1
 
 
 Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,408.375,130.47,277.905
-Inf Greedy,267.14,50.0,217.14
+Greedy,261.539,101.505,160.034
+Inf Greedy,102.0875,30.505,71.58250000000001
 
 Chain-Structured Project
 
 Node Ranking for Chain-Structured Project Under Greedy Strategy
 Author,Label,Rank
-Stasys Jukna,T,1
-Ismail Ari,DM,24
-Justin J. Levandoski,DB,26
-Yongyi Mao,AI,28
+Simon Perkins,AI,10
+Saori Kawasaki,DM,30
+Carmine Ventre,T,1
+Rafael Alonso,DB,20
 
 
 Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Stasys Jukna,T,1
-Wen Niu,DM,1
-Ricardo Rocha,AI,9
-Viswanathan Krishnamurthy,DB,1
+Mario A. Nascimento,DB,1
+Chandan K. Reddy,DM,3
+Alexandre Klementiev,AI,1
+Carmine Ventre,T,1
 
 
 Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,408.375,130.47,277.905
-Inf Greedy,267.14,50.0,217.14
+Greedy,261.539,101.505,160.034
+Inf Greedy,102.0875,30.505,71.58250000000001
 
