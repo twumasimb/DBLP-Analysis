@@ -231,7 +231,7 @@ def assign_labels(item):
         return None
 
 
-def get_node_rank(graph, node):
+def get_node_rank(graph, node) -> int:
     label = graph.nodes[node]['label']
     node_ranks = {}
     for n in graph.nodes():
@@ -242,7 +242,7 @@ def get_node_rank(graph, node):
     ranked_nodes = sorted(node_ranks, key=node_ranks.get, reverse=True)
     node_rank = ranked_nodes.index(node) + 1
     # print(ranked_nodes)
-    return node_rank
+    return int(node_rank)
 
 def get_top_ranked_node_each_group(graph):
     # Calculate the rank of all nodes once

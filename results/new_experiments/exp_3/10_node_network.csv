@@ -1,0 +1,117 @@
+Star-Structured Project
+
+Node Ranking for Star-Structured Project Under Greedy Strategy
+Author,Label,Rank
+Siddharth Suri,T,4
+Yosihisa Udagawa,DB,1
+Haibin Cheng,DM,9
+Akira Maruoka,AI,1
+
+
+Node Ranking for Star-Structured Project Under Influence Greedy Strategy
+Author,Label,Rank
+Guillaume Wisniewski,DM,1
+Ignaz Rutter,T,1
+Yosihisa Udagawa,DB,1
+Akira Maruoka,AI,1
+
+
+Node Ranking for Star-Structured Project Under Influence Greedy Strategy
+Algorithm,Objective Function,Leaders Efficiency,Team efficiency
+Greedy,142.0425,16.67,125.3725
+Inf Greedy,113.7072,0.0,113.7072
+
+
+Node Ranking for Star-Structured Project Under Influence Greedy Strategy
+Author,Label,Rank
+Guillaume Wisniewski,DM,1
+Yosihisa Udagawa,DB,1
+Akira Maruoka,AI,1
+Ignaz Rutter,T,1
+
+
+Influence Score for  10 per team node network
+Algorithm,Objective Function
+Greedy,142.0425
+Inf Greedy,113.7072
+Random,39.55
+Inf,0.0
+
+Fully-connected Structured Project
+
+Node Ranking for Fully-connected Structured Project Under Greedy Strategy
+Author,Label,Rank
+Siddharth Suri,T,4
+Yosihisa Udagawa,DB,1
+Haibin Cheng,DM,9
+Akira Maruoka,AI,1
+
+
+Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
+Author,Label,Rank
+Guillaume Wisniewski,DM,1
+Ignaz Rutter,T,1
+Yosihisa Udagawa,DB,1
+Akira Maruoka,AI,1
+
+
+Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
+Algorithm,Objective Function,Leaders Efficiency,Team efficiency
+Greedy,142.0425,16.67,125.3725
+Inf Greedy,113.7072,0.0,113.7072
+
+
+Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
+Author,Label,Rank
+Guillaume Wisniewski,DM,1
+Yosihisa Udagawa,DB,1
+Akira Maruoka,AI,1
+Ignaz Rutter,T,1
+
+
+Influence Score for  10 per team node network
+Algorithm,Objective Function
+Greedy,142.0425
+Inf Greedy,113.7072
+Random,39.3
+Inf,0.0
+
+Chain-Structured Project
+
+Node Ranking for Chain-Structured Project Under Greedy Strategy
+Author,Label,Rank
+Siddharth Suri,T,4
+Yosihisa Udagawa,DB,1
+Haibin Cheng,DM,9
+Akira Maruoka,AI,1
+
+
+Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
+Author,Label,Rank
+Guillaume Wisniewski,DM,1
+Ignaz Rutter,T,1
+Yosihisa Udagawa,DB,1
+Akira Maruoka,AI,1
+
+
+Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
+Algorithm,Objective Function,Leaders Efficiency,Team efficiency
+Greedy,142.0425,16.67,125.3725
+Inf Greedy,113.7072,0.0,113.7072
+
+
+Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
+Author,Label,Rank
+Guillaume Wisniewski,DM,1
+Yosihisa Udagawa,DB,1
+Akira Maruoka,AI,1
+Ignaz Rutter,T,1
+
+
+Influence Score for  10 per team node network
+Algorithm,Objective Function
+Greedy,142.0425
+Inf Greedy,113.7072
+Random,39.18
+Inf,0.0
+
