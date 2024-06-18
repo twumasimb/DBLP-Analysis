@@ -409,10 +409,18 @@ def randomAlgo(network):
 
 
 def randomMonteCarlo(graph, num_iter):
+    """
+        We calculate the weight of the adjacent nodes the selected node is connected to in its team.
+        We then calculate the weight of the subgraph formed by the selected nodes.(iterteam communication)
+    """
     total_weight = 0
 
     for _ in range(num_iter):
-        total_weight += sum_edge_weights(graph.subgraph(randomAlgo(graph)))
+        local_weight = 0
+        for node in randomAlgo(graph):
+            local_weight += (average_weight_of_adjacent_nodes(graph, node))
+        
+        total_weight = total_weight + local_weight + sum_edge_weights(graph.subgraph(randomAlgo(graph)))
 
     avg_weight = round(total_weight / num_iter, 2)
     # print(f"Using Random : {avg_weight}")
