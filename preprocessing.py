@@ -569,7 +569,7 @@ def InfluenceGreedy(graph_G, graph_P):
     return subset, round(communication_efficiency, 4)
 
 
-def add_weights(network):
+def add_weights(network, alpha=0.5, criterion='min'):
     """
     Adds edges to the network with a weight value based on the minimum weight in the network.
 
@@ -581,7 +581,10 @@ def add_weights(network):
     """
 
     # Find the minimum weight in the network
-    min_weight = min(nx.get_edge_attributes(network, 'weight').values())
+    if criterion == 'min':
+        min_weight = min(nx.get_edge_attributes(network, 'weight').values())
+    if criterion == 'mean':
+        min_weight = sum(nx.get_edge_attributes(network, 'weight').values())/len(nx.get_edge_attributes(network, 'weight').values())
 
     # Iterate over all pairs of nodes
     for node1 in network.nodes():
@@ -589,6 +592,6 @@ def add_weights(network):
             # Check if there is no edge between the nodes
             if not network.has_edge(node1, node2):
                 # Add the edge with the weight value
-                network.add_edge(node1, node2, weight=0.1 * min_weight)
+                network.add_edge(node1, node2, weight=(alpha * min_weight))
 
     return network

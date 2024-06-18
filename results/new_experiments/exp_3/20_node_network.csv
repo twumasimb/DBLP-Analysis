@@ -2,116 +2,116 @@ Star-Structured Project
 
 Node Ranking for Star-Structured Project Under Greedy Strategy
 Author,Label,Rank
-Jörg Hakenberg,DB,1
-Mark Sandler,DM,9
+Joris M. Mooij,AI,1
 Bogdan S. Chlebus,T,13
-Juha Karhunen,AI,1
+Stefan Krompass,DB,1
+Mark Sandler,DM,7
 
 
 Node Ranking for Star-Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Jörg Hakenberg,DB,1
-Yi-Min Wang,DM,1
+Yue Lu,DM,1
+Stefan Krompass,DB,1
+Joris M. Mooij,AI,1
 Patrice Enjalbert,T,1
-Juha Karhunen,AI,1
 
 
 Node Ranking for Star-Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,161.4999,18.18,143.3199
-Inf Greedy,117.6757,0.0,117.6757
+Greedy,143.213,19.146,124.067
+Inf Greedy,99.1751,1.127,98.0481
 
 
-Node Ranking for Star-Structured Project Under Influence Greedy Strategy
+Node Ranking for Star-Structured Project Under Influence Strategy
 Author,Label,Rank
-Yi-Min Wang,DM,1
-Jörg Hakenberg,DB,1
-Juha Karhunen,AI,1
+Stefan Krompass,DB,1
 Patrice Enjalbert,T,1
+Joris M. Mooij,AI,1
+Yue Lu,DM,1
 
 
 Influence Score for  20 per team node network
 Algorithm,Objective Function
-Greedy,161.4999
-Inf Greedy,117.6757
-Random,24.74
-Inf,0.0
+Greedy,143.213
+Inf Greedy,99.1751
+Random,26.95
+Inf,1.127
 
 Fully-connected Structured Project
 
 Node Ranking for Fully-connected Structured Project Under Greedy Strategy
 Author,Label,Rank
-Jörg Hakenberg,DB,1
-Mark Sandler,DM,9
-Bogdan S. Chlebus,T,13
-Juha Karhunen,AI,1
+Indrajit Bhattacharya,DM,14
+Stefan Krompass,DB,1
+Patrice Enjalbert,T,1
+Wojciech Gryc,AI,6
 
 
 Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Jörg Hakenberg,DB,1
-Yi-Min Wang,DM,1
+Yue Lu,DM,1
+Stefan Krompass,DB,1
+Joris M. Mooij,AI,1
 Patrice Enjalbert,T,1
-Juha Karhunen,AI,1
 
 
 Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,161.4999,18.18,143.3199
-Inf Greedy,117.6757,0.0,117.6757
+Greedy,173.8589,30.019,143.8399
+Inf Greedy,99.9801,1.61,98.3701
 
 
-Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
+Node Ranking for Fully-connected Structured Project Under Influence Strategy
 Author,Label,Rank
-Yi-Min Wang,DM,1
-Jörg Hakenberg,DB,1
-Juha Karhunen,AI,1
+Stefan Krompass,DB,1
 Patrice Enjalbert,T,1
+Joris M. Mooij,AI,1
+Yue Lu,DM,1
 
 
 Influence Score for  20 per team node network
 Algorithm,Objective Function
-Greedy,161.4999
-Inf Greedy,117.6757
-Random,24.18
-Inf,0.0
+Greedy,173.8589
+Inf Greedy,99.9801
+Random,29.45
+Inf,1.61
 
 Chain-Structured Project
 
 Node Ranking for Chain-Structured Project Under Greedy Strategy
 Author,Label,Rank
-Jörg Hakenberg,DB,1
-Mark Sandler,DM,9
+Joris M. Mooij,AI,1
 Bogdan S. Chlebus,T,13
-Juha Karhunen,AI,1
+Stefan Krompass,DB,1
+Mark Sandler,DM,7
 
 
 Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Jörg Hakenberg,DB,1
-Yi-Min Wang,DM,1
+Yue Lu,DM,1
+Stefan Krompass,DB,1
+Joris M. Mooij,AI,1
 Patrice Enjalbert,T,1
-Juha Karhunen,AI,1
 
 
 Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,161.4999,18.18,143.3199
-Inf Greedy,117.6757,0.0,117.6757
+Greedy,143.052,19.146,123.906
+Inf Greedy,99.0141,1.127,97.8871
 
 
-Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
+Node Ranking for Chain-Structured Project Under Influence Strategy
 Author,Label,Rank
-Yi-Min Wang,DM,1
-Jörg Hakenberg,DB,1
-Juha Karhunen,AI,1
+Stefan Krompass,DB,1
 Patrice Enjalbert,T,1
+Joris M. Mooij,AI,1
+Yue Lu,DM,1
 
 
 Influence Score for  20 per team node network
 Algorithm,Objective Function
-Greedy,161.4999
-Inf Greedy,117.6757
-Random,25.4
-Inf,0.0
+Greedy,143.052
+Inf Greedy,99.0141
+Random,27.42
+Inf,1.127
 

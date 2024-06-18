@@ -2,116 +2,116 @@ Star-Structured Project
 
 Node Ranking for Star-Structured Project Under Greedy Strategy
 Author,Label,Rank
-Luca de Alfaro,T,9
-Brandon Berg,DB,1
-Yong Zhang,DM,4
-Herman L. Ferrá,AI,1
+Bernhard Hengst,AI,1
+Luca de Alfaro,T,11
+Ramaswamy Hariharan,DB,1
+Yong Zhang,DM,3
 
 
 Node Ranking for Star-Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Herman L. Ferrá,AI,1
-Hans Jürgen Prömel,T,1
-Brandon Berg,DB,1
-Walter A. Kosters,DM,1
+Bernhard Hengst,AI,1
+Jianxin Wu,DM,1
+Klaus Reinhardt,T,1
+Ramaswamy Hariharan,DB,1
 
 
 Node Ranking for Star-Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,193.4613,22.22,171.2413
-Inf Greedy,128.0836,0.0,128.0836
+Greedy,169.5666,24.122,145.4446
+Inf Greedy,106.5031,2.219,104.28410000000001
 
 
-Node Ranking for Star-Structured Project Under Influence Greedy Strategy
+Node Ranking for Star-Structured Project Under Influence Strategy
 Author,Label,Rank
-Walter A. Kosters,DM,1
-Brandon Berg,DB,1
-Herman L. Ferrá,AI,1
-Hans Jürgen Prömel,T,1
+Ramaswamy Hariharan,DB,1
+Klaus Reinhardt,T,1
+Bernhard Hengst,AI,1
+Jianxin Wu,DM,1
 
 
 Influence Score for  15 per team node network
 Algorithm,Objective Function
-Greedy,193.4613
-Inf Greedy,128.0836
-Random,34.94
-Inf,0.0
+Greedy,169.5666
+Inf Greedy,106.5031
+Random,39.02
+Inf,2.219
 
 Fully-connected Structured Project
 
 Node Ranking for Fully-connected Structured Project Under Greedy Strategy
 Author,Label,Rank
-Luca de Alfaro,T,9
-Brandon Berg,DB,1
-Yong Zhang,DM,4
-Herman L. Ferrá,AI,1
+Soujanya Vadapalli,DB,7
+Luca de Alfaro,T,11
+Luh Yen,AI,7
+Yong Zhang,DM,3
 
 
 Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Herman L. Ferrá,AI,1
-Hans Jürgen Prömel,T,1
-Brandon Berg,DB,1
-Walter A. Kosters,DM,1
+Soujanya Vadapalli,DB,7
+Jianxin Wu,DM,1
+Klaus Reinhardt,T,1
+Luh Yen,AI,7
 
 
 Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,193.4613,22.22,171.2413
-Inf Greedy,128.0836,0.0,128.0836
+Greedy,381.4841,154.122,227.3621
+Inf Greedy,368.1585,132.219,235.9395
 
 
-Node Ranking for Fully-connected Structured Project Under Influence Greedy Strategy
+Node Ranking for Fully-connected Structured Project Under Influence Strategy
 Author,Label,Rank
-Walter A. Kosters,DM,1
-Brandon Berg,DB,1
-Herman L. Ferrá,AI,1
-Hans Jürgen Prömel,T,1
+Ramaswamy Hariharan,DB,1
+Klaus Reinhardt,T,1
+Bernhard Hengst,AI,1
+Jianxin Wu,DM,1
 
 
 Influence Score for  15 per team node network
 Algorithm,Objective Function
-Greedy,193.4613
-Inf Greedy,128.0836
-Random,36.79
-Inf,0.0
+Greedy,381.4841
+Inf Greedy,368.1585
+Random,56.31
+Inf,3.17
 
 Chain-Structured Project
 
 Node Ranking for Chain-Structured Project Under Greedy Strategy
 Author,Label,Rank
-Luca de Alfaro,T,9
-Brandon Berg,DB,1
-Yong Zhang,DM,4
-Herman L. Ferrá,AI,1
+Soujanya Vadapalli,DB,7
+Jianxin Wu,DM,1
+Klaus Reinhardt,T,1
+Luh Yen,AI,7
 
 
 Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
 Author,Label,Rank
-Herman L. Ferrá,AI,1
-Hans Jürgen Prömel,T,1
-Brandon Berg,DB,1
-Walter A. Kosters,DM,1
+Bernhard Hengst,AI,1
+Jianxin Wu,DM,1
+Klaus Reinhardt,T,1
+Ramaswamy Hariharan,DB,1
 
 
 Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
 Algorithm,Objective Function,Leaders Efficiency,Team efficiency
-Greedy,193.4613,22.22,171.2413
-Inf Greedy,128.0836,0.0,128.0836
+Greedy,193.8333,41.902,151.9313
+Inf Greedy,106.5031,2.219,104.28410000000001
 
 
-Node Ranking for Chain-Structured Project Under Influence Greedy Strategy
+Node Ranking for Chain-Structured Project Under Influence Strategy
 Author,Label,Rank
-Walter A. Kosters,DM,1
-Brandon Berg,DB,1
-Herman L. Ferrá,AI,1
-Hans Jürgen Prömel,T,1
+Ramaswamy Hariharan,DB,1
+Klaus Reinhardt,T,1
+Bernhard Hengst,AI,1
+Jianxin Wu,DM,1
 
 
 Influence Score for  15 per team node network
 Algorithm,Objective Function
-Greedy,193.4613
-Inf Greedy,128.0836
-Random,35.64
-Inf,0.0
+Greedy,193.8333
+Inf Greedy,106.5031
+Random,39.67
+Inf,2.219
 
