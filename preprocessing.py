@@ -603,3 +603,40 @@ def add_weights(network, alpha=0.5, criterion='min'):
                 network.add_edge(node1, node2, weight=(alpha * min_weight))
 
     return network
+
+# Get the subgraph of a given node in G based on the labels in P
+def subgraph_by_label(G, P, node_g):
+    # Get the label of the given node in G
+    label_g = G.nodes[node_g]['label']
+    
+    # Find all connected labels in P
+    connected_labels = set()
+    for edge in P.edges(label_g):
+        connected_labels.add(edge[1])
+    for edge in P.edges():
+        if edge[1] == label_g:
+            connected_labels.add(edge[0])
+    
+    # Add the original label to the set
+    connected_labels.add(label_g)
+    
+    # Select all nodes in G with labels in connected_labels
+    selected_nodes = [n for n, attr in G.nodes(data=True) if attr['label'] in connected_labels]
+    
+    # Generate the subgraph of the selected nodes
+    subgraph = G.subgraph(selected_nodes).copy()
+    
+    return subgraph
+
+
+def subgraph_by_same_label(G, node_g):
+    # Get the label of the given node in G
+    label_g = G.nodes[node_g]['label']
+    
+    # Select all nodes in G with the same label as node_g
+    selected_nodes = [n for n, attr in G.nodes(data=True) if attr['label'] == label_g]
+    
+    # Generate the subgraph of the selected nodes
+    subgraph = G.subgraph(selected_nodes).copy()
+    
+    return subgraph
