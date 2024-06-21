@@ -30,10 +30,14 @@ def Greedy(graph_G, graph_P, seed_node, metric_fn, beta=None):
 
                 total_inf = sum(leader_eff(graph_G, graph_P,
                                 metric_fn, node, beta) for node in temp_subset)
+                old_inf = sum(leader_eff(graph_G, graph_P,
+                                metric_fn, node, beta) for node in subset)
+                
+                marginal_inf = total_inf - old_inf # Calculate the marginal influence of the node
 
                 # Update the best node if the current node maximizes the total edge weight
-                if total_inf > max_inf:
-                    max_inf = total_inf
+                if marginal_inf > max_inf:
+                    max_inf = marginal_inf
                     best_node = node
 
         # Add the best node to the subset
@@ -41,7 +45,7 @@ def Greedy(graph_G, graph_P, seed_node, metric_fn, beta=None):
             break
         subset.add(best_node)
         labels.add(graph_G.nodes[best_node]['label'])
-        communication_efficiency += max_inf
+        communication_efficiency += marginal_inf
 
     return subset, round(communication_efficiency, 4)
 
@@ -117,8 +121,8 @@ def inteam_influence_only(graph_G, graph_P, metric_fn):
 
     print("\n")
 
-    print("Inter-team ranking")
-    for node in network.nodes():
-        print(f"Team :{graph_G.copy().nodes[node]['label']}, Node: {node}, Rank: {inter_team_rank(graph_G, graph_P, metric_fn, node)}")
+    # print("Inter-team ranking")
+    # for node in network.nodes():
+    #     print(f"Team :{graph_G.copy().nodes[node]['label']}, Node: {node}, Rank: {inter_team_rank(graph_G, graph_P, metric_fn, node)}")
     
     return sum(leader_eff(graph_G, graph_P, metric_fn, user, beta=None) for user in network)

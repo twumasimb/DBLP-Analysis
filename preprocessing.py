@@ -377,33 +377,30 @@ def sum_edge_weights(graph) -> float:
 
 def randomAlgo(network):
     """
-    Randomly selects a node from each unique venue in the given network.
+    Randomly selects a node from each unique label in the given network.
 
     Parameters:
-    - network (networkx.Graph): The network graph containing nodes with venues attribute.
+    - network (networkx.Graph): The network graph containing nodes with 'label' attribute.
 
     Returns:
     - list: A list of selected nodes, one for each unique venue in the network.
     """
 
-    # Assuming G is your graph
-    venues = nx.get_node_attributes(network, 'label').values()
-
-    # Flatten the list of venues
-    flattened_venues = [venue for sublist in venues for venue in sublist]
-
+    # Assuming 'label' attribute is a single value, not a list
+    label_dict = nx.get_node_attributes(network, 'label')
+    
     # Get unique venues
-    unique_venues = set(flattened_venues)
+    unique_labels = set(label_dict.values())
 
     selected_nodes = {}
-    for venue in unique_venues:
+    for label in unique_labels:
         # get nodes with this venue
-        nodes = [n for n, v in nx.get_node_attributes(network, 'label').items() if venue in v]
+        nodes = [n for n, v in label_dict.items() if v == label]
         
         # randomly select a node
-        selected_node = random.choice(nodes)
-        
-        selected_nodes[venue] = selected_node
+        if nodes:  # check if nodes list is not empty
+            selected_node = random.choice(nodes)
+            selected_nodes[label] = selected_node
 
     return list(selected_nodes.values())
 
