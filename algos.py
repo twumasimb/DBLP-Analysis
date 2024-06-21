@@ -57,3 +57,18 @@ def leader_eff(graph_G, graph_P, metric_fn, node, beta=None):
         return iter_team + intra_team
     else:
         return beta * iter_team + (1 - beta) * intra_team
+
+
+def intra_team_rank(graph_G, metric_fn, node) -> int:
+    team_graph = ps.subgraph_by_same_label(graph_G, node)  # Subgraph of nodes with the same label
+    centrality = metric_fn(team_graph)  # Centrality measure on the team graph
+    ranked_nodes = sorted(centrality, key=centrality.get, reverse=True)
+    node_rank = ranked_nodes.index(node) + 1
+    return int(node_rank)
+
+def inter_team_rank(graph_G, graph_P, metric_fn, node) -> int:
+    team_graph = ps.subgraph_by_label(graph_G, graph_P, node)  # Subgraph of nodes with the same label
+    centrality = metric_fn(team_graph)  # Centrality measure on the team graph
+    ranked_nodes = sorted(centrality, key=centrality.get, reverse=True)
+    node_rank = ranked_nodes.index(node) + 1
+    return int(node_rank)
