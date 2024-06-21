@@ -104,6 +104,7 @@ def get_top_node_from_each_group(graph_G, graph_P, metric_fn):
         team_graph = graph_G.subgraph(team_members)
         centrality = metric_fn(team_graph)
         ranked_nodes = sorted(centrality, key=centrality.get, reverse=True)
+        print(centrality)
         top_node = ranked_nodes[0] if ranked_nodes else None
         top_nodes.append(top_node)
     return top_nodes
@@ -121,8 +122,8 @@ def inteam_influence_only(graph_G, graph_P, metric_fn):
 
     print("\n")
 
-    # print("Inter-team ranking")
-    # for node in network.nodes():
-    #     print(f"Team :{graph_G.copy().nodes[node]['label']}, Node: {node}, Rank: {inter_team_rank(graph_G, graph_P, metric_fn, node)}")
+    print("Inter-team ranking")
+    for node in network.nodes():
+        print(f"Team :{graph_G.copy().nodes[node]['label']}, Node: {node}, Rank: {inter_team_rank(graph_G, graph_P, metric_fn, node)}")
     
     return sum(leader_eff(graph_G, graph_P, metric_fn, user, beta=None) for user in network)
