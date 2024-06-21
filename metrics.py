@@ -3,10 +3,10 @@ import networkx as nx
 
 def compute_closeness_centrality(network, node=None):
     if node is None:
-        closeness_centrality = nx.closeness_centrality(network)
+        closeness_centrality = nx.closeness_centrality(network, distance='weight')
         return closeness_centrality
     else:
-        closeness_centrality = nx.closeness_centrality(network)
+        closeness_centrality = nx.closeness_centrality(network, distance='weight')
         return closeness_centrality[node] * 100
 
 
