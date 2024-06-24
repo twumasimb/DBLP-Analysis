@@ -10,7 +10,7 @@ def compute_closeness_centrality(network, node=None):
         return closeness_centrality[node] * 100
 
 
-def compute_degree_centrality(network, node):
+def compute_degree_centrality(network, node=None):
     if node is None:
         degree_centrality = nx.degree_centrality(network)
         return degree_centrality
