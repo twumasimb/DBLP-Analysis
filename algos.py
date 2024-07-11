@@ -50,6 +50,8 @@ def Greedy(graph_G, graph_P, seed_node, metric_fn, beta=None):
     return subset, round(communication_efficiency, 4)
 
 
+
+
 def leader_eff(graph_G, graph_P, metric_fn, node, beta=None):
     interteam_network = ps.subgraph_by_same_label(graph_G, node)
     intrateam_network = ps.subgraph_by_label(graph_G, graph_P, node)
@@ -58,9 +60,9 @@ def leader_eff(graph_G, graph_P, metric_fn, node, beta=None):
     intra_team = metric_fn(intrateam_network, node)
 
     if beta is None:
-        return iter_team + intra_team
+        return (iter_team) + (intra_team)
     else:
-        return beta * iter_team + (1 - beta) * intra_team
+        return beta * (iter_team) + (1 - beta) * (intra_team)
 
 
 def intra_team_rank(graph_G, metric_fn, node) -> int:
@@ -104,7 +106,7 @@ def get_top_node_from_each_group(graph_G, graph_P, metric_fn):
         team_graph = graph_G.subgraph(team_members)
         centrality = metric_fn(team_graph)
         ranked_nodes = sorted(centrality, key=centrality.get, reverse=True)
-        print(centrality)
+        print(centrality) #prints out the centrality of the nodes 
         top_node = ranked_nodes[0] if ranked_nodes else None
         top_nodes.append(top_node)
     return top_nodes
