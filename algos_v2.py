@@ -1,55 +1,100 @@
 import preprocessing as ps
 import networkx as nx
 
+def subgraph_by_label(G, P, node_g):
+    """
+    Generate a subgraph of G based on nodes connected to node_g's label in P.
+    Includes node_g itself regardless of its label's connection status.
 
-# def Greedy(graph_G, graph_P, seed_node, metric_fn, beta=None):
-#     if graph_G is None or graph_P is None:
-#         raise RuntimeError("One or Both of the graphs is None!")
+    Parameters:
+    - G: NetworkX graph
+    - P: NetworkX graph representing connections between labels
+    - node_g: Node in G from which to generate the subgraph
 
-#     if len(graph_P.nodes) > len(graph_G.nodes):
-#         print("Error: Number of nodes in P is greater than the number of nodes in G.")
-#         return None
-
-#     subset = set()
-#     subset.add(seed_node)
-#     labels = set()
-#     labels.add(graph_G.nodes[seed_node]['label'])
-#     communication_efficiency = leader_eff(
-#         graph_G, graph_P, metric_fn, seed_node, beta)  # Initial communication efficiency with seed node
-
-#     while len(subset) < len(graph_P.nodes):
-#         best_node = None
-#         max_inf = float('-inf')
-
-#         # Iterate over nodes in G not in the subset
-#         for node in set(graph_G.nodes) - subset:
-#             node_label = graph_G.nodes[node]['label']
-#             if node_label not in labels:
-#                 temp_subset = subset.copy()
-#                 temp_subset.add(node)
-
-#                 total_inf = sum(leader_eff(graph_G, graph_P,
-#                                 metric_fn, node, beta) for node in temp_subset)
-#                 old_inf = sum(leader_eff(graph_G, graph_P,
-#                                 metric_fn, node, beta) for node in subset)
-
-#                 marginal_inf = total_inf - old_inf # Calculate the marginal influence of the node
-
-#                 # Update the best node if the current node maximizes the total edge weight
-#                 if marginal_inf > max_inf:
-#                     max_inf = marginal_inf
-#                     best_node = node
-
-#         # Add the best node to the subset
-#         if best_node is None:
-#             break
-#         subset.add(best_node)
-#         labels.add(graph_G.nodes[best_node]['label'])
-#         communication_efficiency += marginal_inf
-
-#     return subset, round(communication_efficiency, 4)
+    Returns:
+    - subgraph: NetworkX subgraph of G
+    """
+    label_g = G.nodes[node_g]['label']
+    
+    # Find all connected labels in P
+    connected_labels = set()
+    for u, v in P.edges():
+        if v == label_g:
+            connected_labels.add(u)
+        elif u == label_g:
+            connected_labels.add(v)
+    
+    # Include node_g in the subgraph even if its label has no connections
+    connected_labels.add(label_g)
+    
+    # Select all nodes in G with labels in connected_labels
+    selected_nodes = [n for n, attr in G.nodes(data=True) if attr['label'] in connected_labels]
+    
+    # Generate the subgraph of the selected nodes
+    subgraph = G.subgraph(selected_nodes).copy()
+    
+    return subgraph
 
 
+def subgraph_by_same_label(G, node_g):
+    """
+    Generate a subgraph of G consisting of nodes with the same label as node_g.
+
+    Parameters:
+    - G: NetworkX graph
+    - node_g: Node in G
+
+    Returns:
+    - subgraph: NetworkX subgraph of G
+    """
+    label_g = G.nodes[node_g]['label']
+    
+    # Select all nodes in G with the same label as node_g
+    selected_nodes = [n for n, attr in G.nodes(data=True) if attr['label'] == label_g]
+    
+    # Generate the subgraph of the selected nodes
+    subgraph = G.subgraph(selected_nodes).copy()
+    
+    return subgraph
+
+
+def intra_team_rank(graph_G, metric_fn, node) -> int:
+    """
+    Rank a node within its team based on a centrality metric.
+    """
+    team_graph = ps.subgraph_by_same_label(graph_G, node)
+    
+    if len(team_graph) == 0:
+        raise ValueError(f"No nodes found with the same label as node {node}.")
+    
+    centrality = metric_fn(team_graph)
+    ranked_nodes = sorted(centrality, key=centrality.get, reverse=True)
+    
+    try:
+        node_rank = ranked_nodes.index(node) + 1
+    except ValueError:
+        raise ValueError(f"Node {node} not found in the centrality rankings of its team.")
+    
+    return int(node_rank)
+
+def inter_team_rank(graph_G, graph_P, metric_fn, node) -> int:
+    """
+    Rank a node across different teams based on a centrality metric.
+    """
+    team_graph = ps.subgraph_by_label(graph_G, graph_P, node)
+    
+    if len(team_graph) == 0:
+        raise ValueError(f"No nodes found in the subgraph defined by labels in graph_P.")
+    
+    centrality = metric_fn(team_graph)
+    ranked_nodes = sorted(centrality, key=centrality.get, reverse=True)
+    
+    try:
+        node_rank = ranked_nodes.index(node) + 1
+    except ValueError:
+        raise ValueError(f"Node {node} not found in the centrality rankings across teams.")
+    
+    return int(node_rank)
 
 
 def leader_eff(graph_G, graph_P, metric_fn, node, beta=None):
@@ -60,9 +105,9 @@ def leader_eff(graph_G, graph_P, metric_fn, node, beta=None):
     intra_team = metric_fn(intrateam_network, node)
 
     if beta is None:
-        return (iter_team) + (intra_team)
+        return iter_team + intra_team
     else:
-        return beta * iter_team + (1 - beta) * intra_team
+        return (beta) * iter_team + ((1 - beta)) * intra_team
 
 
 def intra_team_rank(graph_G, metric_fn, node) -> int:
@@ -106,7 +151,7 @@ def get_top_node_from_each_group(graph_G, graph_P, metric_fn):
         team_graph = graph_G.subgraph(team_members)
         centrality = metric_fn(team_graph)
         ranked_nodes = sorted(centrality, key=centrality.get, reverse=True)
-        print(centrality) #prints out the centrality of the nodes 
+        print(centrality)
         top_node = ranked_nodes[0] if ranked_nodes else None
         top_nodes.append(top_node)
     return top_nodes
@@ -134,10 +179,12 @@ def inteam_influence_only(graph_G, graph_P, metric_fn):
     return round(sum(leader_eff(graph_G, graph_P, metric_fn, user, beta=None) for user in network), 2)
 
 
+
 def comm_efficiency(graph_G, graph_P, metric_fn, seed_node, lead_set, beta=None):
     """
     Calculate the communication efficiency of the seed node
     """
+    # Assuming these functions are defined elsewhere to get relevant subgraphs
     interteam_network = ps.subgraph_by_same_label(graph_G, seed_node)
     intrateam_network = ps.subgraph_by_label(graph_G, graph_P, seed_node)
 
@@ -150,22 +197,18 @@ def comm_efficiency(graph_G, graph_P, metric_fn, seed_node, lead_set, beta=None)
         except nx.NodeNotFound:
             continue
 
-    return (beta) * iter_team + ((1 - beta)) * leader_team if beta is not None else iter_team + leader_team
-
+    return (beta * iter_team) + ((1 - beta) * leader_team) if beta is not None else iter_team + leader_team
 
 def Greedy(graph_G, graph_P, seed_node, metric_fn, beta=None):
     if graph_G is None or graph_P is None:
         raise RuntimeError("One or Both of the graphs is None!")
 
     if len(graph_P.nodes) > len(graph_G.nodes):
-        print("Error: Number of nodes in P is greater than the number of nodes in G.")
-        return None
+        raise ValueError("Number of nodes in P is greater than the number of nodes in G.")
 
-    subset = set()
-    subset.add(seed_node)
-    labels = set()
-    labels.add(graph_G.nodes[seed_node]['label'])
-    communication_efficiency = comm_efficiency(graph_G, graph_P, metric_fn, seed_node, subset, beta=None)
+    subset = {seed_node}
+    labels = {graph_G.nodes[seed_node]['label']}
+    communication_efficiency = comm_efficiency(graph_G, graph_P, metric_fn, seed_node, subset, beta)
 
     while len(subset) < len(graph_P.nodes):
         best_node = None
@@ -175,17 +218,10 @@ def Greedy(graph_G, graph_P, seed_node, metric_fn, beta=None):
         for node in set(graph_G.nodes) - subset:
             node_label = graph_G.nodes[node]['label']
             if node_label not in labels:
-                temp_subset = subset.copy()
-                temp_subset.add(node)
-                total_inf = 0.0
-                for node in temp_subset:
-                    total_inf += comm_efficiency(graph_G, graph_P, metric_fn, seed_node, temp_subset, beta=None)
-                
-                old_inf = 0.0
-                for node in subset:
-                    old_inf += comm_efficiency(graph_G, graph_P,metric_fn, seed_node, subset, beta=None)
-
-                marginal_inf = total_inf - old_inf  # Calculate the marginal influence of the node
+                temp_subset = subset | {node}
+                total_inf = comm_efficiency(graph_G, graph_P, metric_fn, seed_node, temp_subset, beta)
+                old_inf = communication_efficiency
+                marginal_inf = total_inf - old_inf
 
                 # Update the best node if the current node maximizes the total edge weight
                 if marginal_inf > max_inf:
@@ -200,3 +236,4 @@ def Greedy(graph_G, graph_P, seed_node, metric_fn, beta=None):
         communication_efficiency += marginal_inf
 
     return subset, round(communication_efficiency, 4)
+

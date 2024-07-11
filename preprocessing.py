@@ -615,10 +615,11 @@ def subgraph_by_label(G, P, node_g):
             connected_labels.add(edge[0])
     
     # Add the original label to the set
-    connected_labels.add(label_g)
+    # connected_labels.add(label_g) # I am taking this out but I will add the node to the set
     
     # Select all nodes in G with labels in connected_labels
     selected_nodes = [n for n, attr in G.nodes(data=True) if attr['label'] in connected_labels]
+    selected_nodes.append(node_g) # Add the node to the network but ignoring all the people from his group.
     
     # Generate the subgraph of the selected nodes
     subgraph = G.subgraph(selected_nodes).copy()

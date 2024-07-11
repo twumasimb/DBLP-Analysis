@@ -3,14 +3,14 @@ import networkx as nx
 
 def compute_closeness_centrality(network, node=None):
     if node is None:
-        closeness_centrality = nx.closeness_centrality(network, distance="weight")
+        closeness_centrality = nx.closeness_centrality(network)
         return closeness_centrality
     else:
-        closeness_centrality = nx.closeness_centrality(network, distance="weight")
+        closeness_centrality = nx.closeness_centrality(network)
         return closeness_centrality[node] * 100
 
 
-def compute_degree_centrality(network, node):
+def compute_degree_centrality(network, node=None):
     if node is None:
         degree_centrality = nx.degree_centrality(network)
         return degree_centrality
