@@ -1,7 +1,6 @@
 import preprocessing as ps
 import networkx as nx
 
-
 # def Greedy(graph_G, graph_P, seed_node, metric_fn, beta=None):
 #     if graph_G is None or graph_P is None:
 #         raise RuntimeError("One or Both of the graphs is None!")

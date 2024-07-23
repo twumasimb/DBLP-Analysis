@@ -181,7 +181,7 @@ def get_author_data(list_of_authors, papers):
             user = Author()
             user.id = id_value
             user.name = author
-            user.coauthors = data['coauthors']
+            user.coauthors = data['coauthors'] # I used this so that I can count the number of time they have coauthored a paper
             user.papers = data['papers'] 
             user.venues = list(data['venues'])
             user.venue_papers = data['venue_papers']
