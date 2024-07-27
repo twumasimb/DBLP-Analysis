@@ -177,7 +177,7 @@ def get_author_data(list_of_authors, papers):
     # Create the Author objects
     authors_data = []
     for id_value, (author, data) in enumerate(author_data.items()):
-        if len(data['papers']) >= 2:
+        if len(data['papers']) >= 3:
             user = Author()
             user.id = id_value
             user.name = author
