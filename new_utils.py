@@ -44,55 +44,43 @@ def subgraph_by_same_label(G, node_g):
 
 def inteamEff(G, source):
     """
-    Returns the inverse closeness centrality (the lower the better)
+    Returns the inverse closeness centrality (the higher the better)
     """
-    return (1/(nx.closeness_centrality(G, source, distance='weight')))/mt.sqrt(G.number_of_nodes())
+    return round(G.nodes[source]['closeness_centrality'], 4)
 
-def crossteamEff(G, P, source, target:list):
-    """
-    Returns the average shortest path between the node and the selected nodes
+def crossTeamEff(G, node, target_nodes:list):
+    total = 0.0
+    for target in target_nodes:
+        shortest_path = nx.shortest_path(G, node, target)
+        len_shortest_path = len(shortest_path)
+        sumDistance = nx.dijkstra_path_length(G, node, target, weight='weight')
+        closeness = (len_shortest_path-1)/sumDistance
+        total += closeness
 
-    """
-    cross_net = subgraph_project(G, P, source)
-    label_list = list(set([node['label'] for _, node in cross_net.nodes(data=True)]))
-    crossEff = 0.0
-    for t in target:
-        if G.nodes[t]['label'] in label_list:
-            if nx.has_path(cross_net, source, t):
-                temp = nx.dijkstra_path_length(cross_net, source, t, weight="weight")/mt.sqrt(cross_net.number_of_nodes())
-                
-            else:
-                temp = 10000
-            
-            crossEff = crossEff + temp
-        
-        else:
-            crossEff = 10000
-
-    return crossEff/len(target)
+    return round(total/len(target_nodes), 4)
 
 
-def get_top_node_from_each_group(graph_G, graph_P):
-    top_nodes = []
-    for label in graph_P.nodes:
-        team_members = [n for n, attr in graph_G.nodes(
-            data=True) if attr['label'] == label]
-        team_graph = graph_G.subgraph(team_members)
-        centrality = nx.closeness_centrality(team_graph)
-        ranked_nodes = sorted(centrality, key=centrality.get, reverse=True)
-        # print(ranked_nodes) #prints out the centrality of the nodes 
-        top_node = ranked_nodes[0] if ranked_nodes else None
-        top_nodes.append(top_node)
+# def get_top_node_from_each_group(graph_G, graph_P):
+#     top_nodes = []
+#     for label in graph_P.nodes:
+#         team_members = [n for n, attr in graph_G.nodes(
+#             data=True) if attr['label'] == label]
+#         team_graph = graph_G.subgraph(team_members)
+#         centrality = nx.closeness_centrality(team_graph)
+#         ranked_nodes = sorted(centrality, key=centrality.get, reverse=True)
+#         # print(ranked_nodes) #prints out the centrality of the nodes 
+#         top_node = ranked_nodes[0] if ranked_nodes else None
+#         top_nodes.append(top_node)
 
-    return top_nodes
+#     return top_nodes
 
-def Greedy(graph_G, graph_P, seed_node):
-    if graph_G is None or graph_P is None:
+def influencial_nodes(G):
+    """Top nodes have centrality of 1.0"""
+    return [node for node in G.nodes if G.nodes[node]['closeness_centrality'] == 1.0]
+
+def Greedy(graph_G, teams:list, seed_node):
+    if graph_G is None:
         RuntimeError("One or Both of the graphs is None! ")
-
-    if len(graph_P.nodes) > len(graph_G.nodes):
-        print("Error: Number of nodes in P is greater than the number of nodes in G.")
-        return None
 
     subset = set()
     subset.add(seed_node)
@@ -100,9 +88,9 @@ def Greedy(graph_G, graph_P, seed_node):
     labels.append(graph_G.nodes[seed_node]['label'])
     communication_efficiency = 0.0
 
-    while len(subset) < len(graph_P.nodes):
+    while len(subset) < len(teams):
         best_node = None
-        min_eff = float('inf')
+        max_eff = float('-inf')
 
         # Iterate over nodes in G not in the subset
         for node in set(graph_G.nodes) - subset:
@@ -112,23 +100,22 @@ def Greedy(graph_G, graph_P, seed_node):
                 temp_subset.add(node)
 
                 # In-team efficiency
-                local_net = subgraph_by_same_label(graph_G, node)
-                in_team_eff = inteamEff(local_net, node)
+                in_team_eff = inteamEff(graph_G, node)
 
                 #cross-team efficiency
-                cross_team_eff = crossteamEff(graph_G, graph_P, node, list(temp_subset))
+                cross_team_eff = crossTeamEff(graph_G, node, list(subset))
 
-                total_eff = in_team_eff + cross_team_eff
+                total_node_eff = in_team_eff + cross_team_eff
 
-                if total_eff < min_eff:
-                    min_eff = total_eff
+                if total_node_eff > max_eff:
+                    max_eff = total_node_eff
                     best_node = node
-                    print(f"node: {best_node}, inteam score: {in_team_eff}, cross-team score: {cross_team_eff}")
+                    # print(f"node: {best_node}, inteam score: {in_team_eff}, cross-team score: {cross_team_eff}")
 
         # Add the best node to the subset
         subset.add(best_node)
         labels.append(graph_G.nodes[best_node]['label'])
-        communication_efficiency += min_eff
+        communication_efficiency += max_eff
 
     # return subset, sum_edge_weights(graph_G.subgraph(subset))
     return subset, round(communication_efficiency, 4)
