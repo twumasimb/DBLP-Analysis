@@ -54,11 +54,10 @@ def crossTeamEff(G, node, target_nodes:list):
         shortest_path = nx.shortest_path(G, node, target)
         len_shortest_path = len(shortest_path)
         sumDistance = nx.dijkstra_path_length(G, node, target, weight='weight')
-        closeness = (len_shortest_path-1)/sumDistance
+        closeness = (len_shortest_path)/sumDistance
         total += closeness
-
-    return round(total/len(target_nodes), 4)
-
+        # print(f"{node} --> {target}: length: {len_shortest_path}, distance: {sumDistance}, closeness: {closeness}")
+    return round(total/len(target_nodes), 4) 
 
 # def get_top_node_from_each_group(graph_G, graph_P):
 #     top_nodes = []
@@ -105,7 +104,7 @@ def Greedy(graph_G, teams:list, seed_node):
                 #cross-team efficiency
                 cross_team_eff = crossTeamEff(graph_G, node, list(subset))
 
-                total_node_eff = in_team_eff + cross_team_eff
+                total_node_eff = in_team_eff + (cross_team_eff * 10)
 
                 if total_node_eff > max_eff:
                     max_eff = total_node_eff
@@ -116,7 +115,7 @@ def Greedy(graph_G, teams:list, seed_node):
         subset.add(best_node)
         labels.append(graph_G.nodes[best_node]['label'])
         communication_efficiency += max_eff
-
+    
     # return subset, sum_edge_weights(graph_G.subgraph(subset))
     return subset, round(communication_efficiency, 4)
 
