@@ -638,3 +638,39 @@ def subgraph_by_same_label(G, node_g):
     subgraph = G.subgraph(selected_nodes).copy()
     
     return subgraph
+
+def scale_edge_weights(G, min_weight=0, max_weight=100):
+    """
+    Scale the weights of edges in a graph to a range between min_weight and max_weight.
+
+    Parameters:
+    G (networkx.Graph): The input graph with weighted edges
+    min_weight (float): The minimum weight in the new scale (default 0)
+    max_weight (float): The maximum weight in the new scale (default 100)
+
+    Returns:
+    networkx.Graph: A new graph with scaled edge weights
+    """
+    # Create a copy of the graph to avoid modifying the original
+    H = G.copy()
+
+    # Get all edge weights
+    weights = [H[u][v]['weight'] for u, v in H.edges()]
+
+    # If all weights are the same, set them to max_weight
+    if len(set(weights)) == 1:
+        for u, v in H.edges():
+            H[u][v]['weight'] = max_weight
+        return H
+
+    # Get the current min and max weights
+    current_min = min(weights)
+    current_max = max(weights)
+
+    # Scale the weights
+    for u, v in H.edges():
+        old_weight = H[u][v]['weight']
+        new_weight = (old_weight - current_min) / (current_max - current_min) * (max_weight - min_weight) + min_weight
+        H[u][v]['weight'] = new_weight
+
+    return H

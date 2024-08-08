@@ -45,31 +45,6 @@ def subgraph_by_same_label(G, node_g):
     
     return subgraph
 
-def find_best_set_of_leaders(G, top_nodes, teams=['DM', 'T', 'DB', 'AI']):
-    """
-    Finds the best set of leaders based on the given graph, top nodes, and teams.
-
-    Parameters:
-    - G (graph): The graph representing the network.
-    - top_nodes (list): The list of top nodes in the network.
-    - teams (list): The list of teams.
-
-    Returns:
-    - best_set (set): The best set of leaders.
-    - max_eff (float): The efficiency of the best set of leaders.
-    """
-
-    max_eff = float('-inf')
-    best_set = set()
-
-    for node in top_nodes:
-        subset, commEff = Greedy(G, teams, node)
-        if commEff > max_eff:
-            max_eff = commEff
-            best_set = subset
-
-    return best_set, max_eff
-
 def analyze_network_by_labels(G, labels=['T', 'DB', 'DM', 'AI']):
     """
     Analyze the network by labels, calculate closeness centrality,
@@ -83,7 +58,7 @@ def analyze_network_by_labels(G, labels=['T', 'DB', 'DM', 'AI']):
         subgraph = G.subgraph(nodes_with_label)
         
         # Calculate closeness centrality
-        closeness_scores = nx.closeness_centrality(subgraph)
+        closeness_scores = nx.closeness_centrality(subgraph, distance='weight') # Distance ensures that the weights are used.
         
         # Set closeness centrality as node attribute
         nx.set_node_attributes(subgraph, closeness_scores, 'closeness_centrality')
@@ -184,16 +159,17 @@ def inteam_eff(G, source):
     """
     return round(G.nodes[source]['closeness_centrality'], 4)
 
-def crossTeamEff(G, node, target_nodes:list):
-    total = 0.0
-    for target in target_nodes:
-        shortest_path = nx.shortest_path(G, node, target)
-        len_shortest_path = len(shortest_path)
-        sumDistance = nx.dijkstra_path_length(G, node, target, weight='weight')
-        closeness = (len_shortest_path)/sumDistance
-        total += closeness
-        # print(f"{node} --> {target}: length: {len_shortest_path}, distance: {sumDistance}, closeness: {closeness}")
-    return round(total/len(target_nodes), 4) 
+# def crossTeamEff(G, node, target_nodes:list):
+#     total = 0.0
+#     for target in target_nodes:
+#         shortest_path = nx.shortest_path(G, node, target)
+#         len_shortest_path = len(shortest_path)
+#         sumDistance = nx.dijkstra_path_length(G, node, target, weight='weight')
+#         # closeness = (len_shortest_path)/sumDistance
+#         closeness = 1/sumDistance # Using the inverse of the weight
+#         total += closeness
+#         # print(f"{node} --> {target}: length: {len_shortest_path}, distance: {sumDistance}, closeness: {closeness}")
+#     return round(total/len(target_nodes), 4) 
 
 
 def average_distance(G, nodes):
@@ -220,6 +196,7 @@ def average_distance(G, nodes):
             distance = nx.shortest_path_length(G, node1, node2)
             sumDistance = nx.dijkstra_path_length(G, node1, node2, weight='weight')
             total_distance += (distance/sumDistance)
+            # total_distance += (1/sumDistance) # Using the inverse of the sum of weights
             pair_count += 1
         except nx.NetworkXNoPath:
             # If there's no path between the nodes, we can either ignore it or handle it as needed
@@ -233,21 +210,22 @@ def average_distance(G, nodes):
         return float('inf')  # or any other value to indicate no valid distances were found
 
 
-def comm_eff(G, leaders:list, alpha=1):
+def comm_eff(G, leaders:list, alpha=2):
     inTeam = 0.0
     crossTeam = 0.0
     for node in leaders:
         inTeam += G.nodes[node]['closeness_centrality']
-    
+    inTeam = inTeam/len(leaders) # Use the average inTeam efficiency
     crossTeam += average_distance(G, leaders)
 
-    #     # print(f"{leaders[0]} --> {leader}: length: {len_shortest_path}, distance: {sumDistance}, closeness: {closeness}")
-    return round(alpha*(crossTeam) + inTeam, 4)
+    # crossTeam = alpha*(crossTeam) + crossTeam # Add a percentage to it.
+    # print(f"cross-team eff: {round(alpha * crossTeam, 4)}, inTeam eff: {round(inTeam, 4)}")
+    return round(alpha*(crossTeam) + inTeam , 4) 
 
 
 def Greedy(graph_G, teams:list, seed_node):
     if graph_G is None:
-        RuntimeError("One or Both of the graphs is None! ")
+        RuntimeError("Graphs is None! ")
 
     subset = set()
     subset.add(seed_node)
@@ -278,6 +256,32 @@ def Greedy(graph_G, teams:list, seed_node):
     
     # return subset, sum_edge_weights(graph_G.subgraph(subset))
     return subset, round(comm_eff(graph_G, list(subset)), 4)
+
+def find_best_set_of_leaders(G, top_nodes, teams=['DM', 'T', 'DB', 'AI']):
+    """
+    Finds the best set of leaders based on the given graph, top nodes, and teams.
+
+    Parameters:
+    - G (graph): The graph representing the network.
+    - top_nodes (list): The list of top nodes in the network.
+    - teams (list): The list of teams.
+
+    Returns:
+    - best_set (set): The best set of leaders.
+    - max_eff (float): The efficiency of the best set of leaders.
+    """
+
+    max_eff = float('-inf')
+    best_set = set()
+
+    for node in top_nodes:
+        subset, commEff = Greedy(G, teams, node)
+        if commEff > max_eff:
+            max_eff = commEff
+            best_set = subset
+            print(f"Current best set {best_set}: eff score: {max_eff}")
+
+    return best_set, max_eff
 
 
 def randomAlgo(G, num_iters=1000):
@@ -330,45 +334,85 @@ def create_unique_label_combinations(G, nodesList):
 
     return combinations
 
-# def Greedy(graph: nx.Graph, teams: List[str], seed_node: str) -> Tuple[List[str], float]:
-#     """
-#     Greedily select nodes from the graph to maximize communication efficiency.
 
-#     Args:
-#     graph (nx.Graph): The input graph.
-#     teams (List[str]): List of team labels.
-#     seed_node (int): The initial node to start the selection.
+# results, top_nodes = analyze_network_by_labels(G)
 
-#     Returns:
-#     Tuple[List[int], float]: Selected subset of nodes and the communication efficiency.
-#     """
-#     if not isinstance(graph, nx.Graph):
-#         raise ValueError("Input must be a NetworkX graph.")
+# print("---Influence Greedy---")
+# best_set, max_eff = find_best_set_of_leaders(G, top_nodes)
+# print(f"Best Set of Leaders: {best_set}, Efficiency: {max_eff}")
+# print(f"Nodes not in top nodes: {best_set - set(top_nodes)}")
+# print("\n")
 
-#     subset = [seed_node]
-#     labels = {graph.nodes[seed_node]['label']}
+# # Testing out some of the top nodes combinations
+# print("--Influence Only---")
+# combinations = create_unique_label_combinations(G, top_nodes)
+# total = 0.0
+# iters = 0
+# print(f"Total combinations: {len(combinations)}")
+# for i, combo in enumerate(combinations[:100], 1):  # Print first 5 combinations
+#     nodes = [node['id'] for node in combo]
+#     # print(f"{nodes}: --> Efficiency : {comm_eff(net_10, nodes)}")
+#     total += comm_eff(G, nodes)
+#     iters += 1
+# print(f"Average for combination {iters} combinations of leaders is: {total/iters}")
+# print("\n")
 
-#     while len(subset) < len(teams):
-#         best_node, max_gain = None, float('-inf')
+# print("---Random Monte Carlo---")
+# print(f"Communication efficiency of Random Algorithm: {randomAlgo(G)}")
 
-#         for node in set(graph.nodes) - set(subset):
-#             if graph.nodes[node]['label'] not in labels:
-#                 temp_subset = subset + [node]
-                
-#                 if len(temp_subset) < 3:
-#                     marginal_gain = comm_eff(graph, temp_subset) - inteam_eff(graph, temp_subset[0])
-#                 else:
-#                     marginal_gain = comm_eff(graph, temp_subset) - comm_eff(graph, temp_subset[:-1])
 
-#                 if marginal_gain > max_gain:
-#                     max_gain = marginal_gain
-#                     best_node = node
+def scale_edge_weights(G, min_weight=0, max_weight=100):
+    """
+    Scale the weights of edges in a graph to a range between min_weight and max_weight.
 
-#         if best_node is None:
-#             break  # No more valid nodes to add
+    Parameters:
+    G (networkx.Graph): The input graph with weighted edges
+    min_weight (float): The minimum weight in the new scale (default 0)
+    max_weight (float): The maximum weight in the new scale (default 100)
 
-#         subset.append(best_node)
-#         labels.add(graph.nodes[best_node]['label'])
+    Returns:
+    networkx.Graph: A new graph with scaled edge weights
+    """
+    # Create a copy of the graph to avoid modifying the original
+    H = G.copy()
 
-#     return subset, round(comm_eff(graph, subset), 4)
+    # Get all edge weights
+    weights = [H[u][v]['weight'] for u, v in H.edges()]
 
+    # If all weights are the same, set them to max_weight
+    if len(set(weights)) == 1:
+        for u, v in H.edges():
+            H[u][v]['weight'] = max_weight
+        return H
+
+    # Get the current min and max weights
+    current_min = min(weights)
+    current_max = max(weights)
+
+    # Scale the weights
+    for u, v in H.edges():
+        old_weight = H[u][v]['weight']
+        new_weight = (old_weight - current_min) / (current_max - current_min) * (max_weight - min_weight) + min_weight
+        H[u][v]['weight'] = new_weight
+
+    return H
+
+# Example usage
+if __name__ == "__main__":
+    # Create a sample graph
+    G = nx.Graph()
+    G.add_edge(1, 2, weight=5)
+    G.add_edge(2, 3, weight=10)
+    G.add_edge(3, 4, weight=15)
+    G.add_edge(4, 1, weight=20)
+
+    print("Original weights:")
+    for u, v, d in G.edges(data=True):
+        print(f"Edge ({u}, {v}): {d['weight']}")
+
+    # Scale the weights
+    H = scale_edge_weights(G)
+
+    print("\nScaled weights:")
+    for u, v, d in H.edges(data=True):
+        print(f"Edge ({u}, {v}): {d['weight']}")
